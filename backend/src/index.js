@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose'); // ← mongoose импортируется здесь, до использования
+const mongoose = require('mongoose');
 const cors = require('cors');
 
 const userRoutes = require('./routes/user');
@@ -12,61 +12,53 @@ const app = express();
 app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
 app.use(express.json());
 
-// Собираем строку подключения — приоритет публичному адресу
-let mongoUri;
+// Публичная строка подключения (твоя из mongo-сервиса)
+const PUBLIC_MONGO_URI = 'mongodb://mongo:tzRwNdsNpmYaWZHJiZZakMyeABWrtJvf@shinkansen.proxy.rlwy.net:35126/railway?retryWrites=true&w=majority&directConnection=true&ssl=true';
 
-// 1. Если есть готовая публичная строка — используем её
-if (process.env.MONGO_PUBLIC_URL) {
-  mongoUri = process.env.MONGO_PUBLIC_URL;
-  console.log('Используем готовую публичную строку MONGO_PUBLIC_URL');
-}
-// 2. Собираем из частей (твой публичный хост shinkansen.proxy.rlwy.net)
-else if (process.env.MONGOPASSWORD) {
-  const mongoUser = process.env.MONGOUSER || 'mongo';
-  const mongoPassword = process.env.MONGOPASSWORD;
-  const mongoHost = process.env.MONGOHOST || 'shinkansen.proxy.rlwy.net';
-  const mongoPort = process.env.MONGOPORT || '35126';
-  const mongoDbName = process.env.MONGODBNAME || 'railway';
+// Функция подключения с ретраями
+const connectDB = async (retries = 5, delay = 5000) => {
+  for (let i = 0; i < retries; i++) {
+    try {
+      console.log(`Попытка подключения к MongoDB (${i + 1}/${retries})...`);
+      await mongoose.connect(PUBLIC_MONGO_URI, {
+        serverSelectionTimeoutMS: 30000,
+        socketTimeoutMS: 90000,
+        connectTimeoutMS: 30000,
+        retryWrites: true,
+        w: 'majority',
+        family: 4,
+        keepAlive: true,
+        keepAliveInitialDelay: 300000,
+      });
+      console.log('✅ MongoDB успешно подключен');
+      
+      // Создаём стартовый промокод
+      const Promo = require('./models/Promo');
+      const existing = await Promo.findOne({ code: 'SAT2026' });
+      if (!existing) {
+        await new Promo({ code: 'SAT2026', reward: 2222, maxUses: 1 }).save();
+        console.log('Промокод SAT2026 создан');
+      } else {
+        console.log('Промокод SAT2026 уже существует');
+      }
+      
+      return; // Успех — выходим из функции
+    } catch (err) {
+      console.error('❌ Ошибка подключения к MongoDB:', err.message);
+      if (i < retries - 1) {
+        console.log(`Повторная попытка через ${delay / 1000} секунд...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
+    }
+  }
+  console.error('❌ Не удалось подключиться к MongoDB после всех попыток');
+  // process.exit(1); // раскомментируй, если хочешь, чтобы контейнер падал при неудаче
+};
 
-  mongoUri = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDbName}?retryWrites=true&w=majority&directConnection=true`;
-  console.log('Собрана строка из переменных (приоритет публичному прокси)');
-}
-// 3. Фоллбек (редко нужен)
-else {
-  console.error('❌ Нет данных для подключения к MongoDB! Проверь переменные');
-  process.exit(1);
-}
+// Запускаем подключение
+connectDB();
 
-// Лог с скрытым паролем
-console.log('Попытка подключения к MongoDB по адресу:', mongoUri.replace(process.env.MONGOPASSWORD || '', '***'));
-
-mongoose.connect(mongoUri, {
-  serverSelectionTimeoutMS: 15000,
-  socketTimeoutMS: 60000,
-  connectTimeoutMS: 30000,
-  retryWrites: true,
-  w: 'majority',
-  family: 4,
-})
-  .then(() => {
-    console.log('✅ MongoDB успешно подключен');
-    
-    // Создаём промокод после успешного подключения
-    const Promo = require('./models/Promo');
-    Promo.findOne({ code: 'SAT2026' })
-      .then(existing => {
-        if (!existing) {
-          return new Promo({ code: 'SAT2026', reward: 2222, maxUses: 1 }).save();
-        }
-      })
-      .then(() => console.log('Промокод SAT2026 проверен/создан'))
-      .catch(err => console.error('Ошибка при создании промокода:', err.message));
-  })
-  .catch(err => {
-    console.error('❌ Ошибка подключения к MongoDB:', err.message);
-  });
-
-// Роуты
+// Роуты (даже если база не подключилась — сервер работает)
 app.use('/api/user', userRoutes);
 app.use('/api/promo', promoRoutes);
 app.use('/api/tasks', tasksRoutes);
