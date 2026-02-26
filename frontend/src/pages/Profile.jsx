@@ -1,26 +1,49 @@
 import { Calendar, Gift } from 'lucide-react';
 
 const Profile = ({ user }) => {
-  const currentUser = user || { firstName: 'Гость', username: '', balance: 0, photoUrl: '', registeredAt: new Date() };
+  // Защита от null/undefined
+  const currentUser = user || {
+    firstName: 'Гость',
+    username: 'guest',
+    photoUrl: 'https://via.placeholder.com/128',
+    balance: 0,
+    registeredAt: new Date().toISOString() // дефолтная дата, если нет из бэкенда
+  };
 
-  const formatDate = (date) => {
-    return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(date)) + ' г.';
+  const formatDate = (dateString) => {
+    if (!dateString) return 'Неизвестно';
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }).format(date) + ' г.';
   };
 
   return (
-    <div className="p-6 pb-32 overflow-y-auto h-screen">
+    <div className="p-6 pb-32 overflow-y-auto h-screen bg-black">
+      {/* Верхняя часть: аватар + имя + @ */}
       <div className="flex flex-col items-center pt-10">
-        <img
-          src={currentUser.photoUrl || 'https://via.placeholder.com/128'}
-          alt="Avatar"
-          className="w-32 h-32 rounded-full object-cover ring-4 ring-green-500/30 shadow-2xl shadow-green-500/20"
-        />
+        <div className="relative">
+          <img
+            src={currentUser.photoUrl}
+            alt="Avatar"
+            className="w-32 h-32 rounded-full object-cover ring-4 ring-green-500/30 shadow-2xl shadow-green-500/20"
+          />
+        </div>
         <h1 className="text-4xl font-bold mt-6 bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 bg-clip-text text-transparent">
           {currentUser.firstName}
         </h1>
-        <p className="text-green-400 mt-2 text-xl">@{currentUser.username || 'guest'}</p>
+        <p className="text-green-400 mt-2 text-xl">@{currentUser.username}</p>
       </div>
 
+      {/* Баланс сверху справа (маленький, как ты просил) */}
+      <div className="absolute top-6 right-6 bg-gradient-to-br from-gray-900 to-black rounded-2xl px-4 py-2 flex items-center gap-2 border border-green-500/30 shadow-sm">
+        <Coins className="text-green-500" size={22} />
+        <span className="text-xl font-bold text-white">{currentUser.balance || 0}</span>
+      </div>
+
+      {/* Основные поля */}
       <div className="mt-12 space-y-6">
         <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 border border-green-500/20 shadow-lg">
           <div className="flex items-center gap-4">
@@ -35,7 +58,7 @@ const Profile = ({ user }) => {
         </div>
       </div>
 
-      {/* Промокод */}
+      {/* Промокод внизу */}
       <div className="mt-10 bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 border border-green-500/20 shadow-lg">
         <div className="flex items-center gap-4 mb-4">
           <div className="bg-green-500/20 p-4 rounded-2xl">
