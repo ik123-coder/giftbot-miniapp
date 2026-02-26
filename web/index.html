@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Satanic App</title>
+<link rel="stylesheet" href="style.css" />
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="user-block">
+      <img id="avatar" class="avatar" />
+      <div class="user-text">
+        <span class="welcome">Добро пожаловать,</span>
+        <span id="firstName" class="name"></span>
+      </div>
+    </div>
+
+    <div class="balance">
+      <span id="balanceValue">500</span>
+    </div>
+  </div>
+
+  <!-- GRID MENU -->
+  <div class="menu-grid">
+    <div class="card" data-page="tasks">Задания</div>
+    <div class="card" data-page="shop">Магазин</div>
+    <div class="card" data-page="giveaways">Розыгрыши</div>
+    <div class="card" data-page="referrals">Рефералы</div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast">Пока недоступно</div>
+
+  <!-- TAB BAR -->
+  <div class="tabbar">
+    <div class="tab active" data-tab="home">Главная</div>
+    <div class="tab" data-tab="tasks">Задания</div>
+    <div class="tab" data-tab="shop">Магазин</div>
+    <div class="tab" data-tab="friends">Друзья</div>
+    <div class="tab" data-tab="profile">Профиль</div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
