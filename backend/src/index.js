@@ -1,47 +1,42 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+// Собираем строку подключения — приоритет ПУБЛИЧНОМУ адресу Railway
+let mongoUri;
 
-const userRoutes = require('./routes/user');
-const promoRoutes = require('./routes/promo');
-const tasksRoutes = require('./routes/tasks');
+// 1. Пробуем использовать публичную строку, если она есть (самый стабильный вариант)
+if (process.env.MONGO_PUBLIC_URL) {
+  mongoUri = process.env.MONGO_PUBLIC_URL;
+  console.log('Используем публичную строку из MONGO_PUBLIC_URL');
+}
+// 2. Если нет публичной — собираем из отдельных частей, но с публичным хостом
+else if (process.env.MONGOPASSWORD && process.env.MONGOHOST?.includes('proxy.rlwy.net')) {
+  mongoUri = `mongodb://${process.env.MONGOUSER || 'mongo'}:${process.env.MONGOPASSWORD}@${process.env.MONGOHOST}:${process.env.MONGOPORT || '27017'}/${process.env.MONGODBNAME || 'railway'}?retryWrites=true&w=majority&directConnection=true`;
+  console.log('Собрана публичная строка из частей (proxy.rlwy.net)');
+}
+// 3. Фоллбек — только если ничего нет (но лучше не доходить сюда)
+else {
+  const mongoUser = process.env.MONGOUSER || 'mongo';
+  const mongoPassword = process.env.MONGOPASSWORD;
+  const mongoHost = process.env.MONGOHOST || 'mongodb.railway.internal';
+  const mongoPort = process.env.MONGOPORT || '27017';
+  const mongoDbName = process.env.MONGODBNAME || 'railway';
 
-const app = express();
-
-// CORS — разрешаем запросы с фронтенда (или с любого, если FRONTEND_URL не указан)
-app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
-app.use(express.json());
-
-// Собираем строку подключения из отдельных переменных Railway
-const mongoUser = process.env.MONGOUSER || 'mongo';
-const mongoPassword = process.env.MONGOPASSWORD;
-const mongoHost = process.env.MONGOHOST || 'mongodb.railway.internal';
-const mongoPort = process.env.MONGOPORT || '27017';
-const mongoDbName = process.env.MONGODBNAME || 'railway';
-
-// Защита: если пароля нет — явно падаем с понятной ошибкой
-if (!mongoPassword) {
-  console.error('❌ ОШИБКА: MONGOPASSWORD не найден в переменных окружения');
-  process.exit(1);
+  mongoUri = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDbName}?retryWrites=true&w=majority&directConnection=true`;
+  console.log('Фоллбек на внутренний адрес (может быть нестабильным)');
 }
 
-const mongoUri = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDbName}?retryWrites=true&w=majority`;
-
-console.log('Попытка подключения к MongoDB по адресу:', mongoUri.replace(mongoPassword, '***')); // скрываем пароль в логах
+// Логируем (пароль скрыт)
+console.log('Попытка подключения к MongoDB по адресу:', mongoUri.replace(process.env.MONGOPASSWORD || '', '***'));
 
 mongoose.connect(mongoUri, {
-  serverSelectionTimeoutMS: 15000,   // даём больше времени на поиск сервера
+  serverSelectionTimeoutMS: 15000,
   socketTimeoutMS: 60000,
   connectTimeoutMS: 30000,
   retryWrites: true,
   w: 'majority',
-  family: 4,                         // используем IPv4 (иногда помогает с internal DNS)
+  family: 4, // IPv4 для стабильности
 })
   .then(() => {
     console.log('✅ MongoDB успешно подключен');
-    
-    // Создаём стартовый промокод (только после успешного подключения)
+    // Создание промокода после успешного подключения
     const Promo = require('./models/Promo');
     Promo.findOne({ code: 'SAT2026' })
       .then(existing => {
@@ -54,17 +49,6 @@ mongoose.connect(mongoUri, {
   })
   .catch(err => {
     console.error('❌ Ошибка подключения к MongoDB:', err.message);
-    // Можно раскомментировать, если хочешь, чтобы контейнер падал и Railway его перезапускал
+    // Раскомментируй, если хочешь авто-перезапуск контейнера при падении
     // process.exit(1);
   });
-
-// Роуты
-app.use('/api/user', userRoutes);
-app.use('/api/promo', promoRoutes);
-app.use('/api/tasks', tasksRoutes);
-
-// Запуск сервера
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
