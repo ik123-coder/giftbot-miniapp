@@ -1,29 +1,43 @@
-// Собираем строку подключения — приоритет ПУБЛИЧНОМУ адресу Railway
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose'); // ← mongoose импортируется здесь, до использования
+const cors = require('cors');
+
+const userRoutes = require('./routes/user');
+const promoRoutes = require('./routes/promo');
+const tasksRoutes = require('./routes/tasks');
+
+const app = express();
+
+app.use(cors({ origin: process.env.FRONTEND_URL || '*' }));
+app.use(express.json());
+
+// Собираем строку подключения — приоритет публичному адресу
 let mongoUri;
 
-// 1. Пробуем использовать публичную строку, если она есть (самый стабильный вариант)
+// 1. Если есть готовая публичная строка — используем её
 if (process.env.MONGO_PUBLIC_URL) {
   mongoUri = process.env.MONGO_PUBLIC_URL;
-  console.log('Используем публичную строку из MONGO_PUBLIC_URL');
+  console.log('Используем готовую публичную строку MONGO_PUBLIC_URL');
 }
-// 2. Если нет публичной — собираем из отдельных частей, но с публичным хостом
-else if (process.env.MONGOPASSWORD && process.env.MONGOHOST?.includes('proxy.rlwy.net')) {
-  mongoUri = `mongodb://${process.env.MONGOUSER || 'mongo'}:${process.env.MONGOPASSWORD}@${process.env.MONGOHOST}:${process.env.MONGOPORT || '27017'}/${process.env.MONGODBNAME || 'railway'}?retryWrites=true&w=majority&directConnection=true`;
-  console.log('Собрана публичная строка из частей (proxy.rlwy.net)');
-}
-// 3. Фоллбек — только если ничего нет (но лучше не доходить сюда)
-else {
+// 2. Собираем из частей (твой публичный хост shinkansen.proxy.rlwy.net)
+else if (process.env.MONGOPASSWORD) {
   const mongoUser = process.env.MONGOUSER || 'mongo';
   const mongoPassword = process.env.MONGOPASSWORD;
-  const mongoHost = process.env.MONGOHOST || 'mongodb.railway.internal';
-  const mongoPort = process.env.MONGOPORT || '27017';
+  const mongoHost = process.env.MONGOHOST || 'shinkansen.proxy.rlwy.net';
+  const mongoPort = process.env.MONGOPORT || '35126';
   const mongoDbName = process.env.MONGODBNAME || 'railway';
 
   mongoUri = `mongodb://${mongoUser}:${mongoPassword}@${mongoHost}:${mongoPort}/${mongoDbName}?retryWrites=true&w=majority&directConnection=true`;
-  console.log('Фоллбек на внутренний адрес (может быть нестабильным)');
+  console.log('Собрана строка из переменных (приоритет публичному прокси)');
+}
+// 3. Фоллбек (редко нужен)
+else {
+  console.error('❌ Нет данных для подключения к MongoDB! Проверь переменные');
+  process.exit(1);
 }
 
-// Логируем (пароль скрыт)
+// Лог с скрытым паролем
 console.log('Попытка подключения к MongoDB по адресу:', mongoUri.replace(process.env.MONGOPASSWORD || '', '***'));
 
 mongoose.connect(mongoUri, {
@@ -32,11 +46,12 @@ mongoose.connect(mongoUri, {
   connectTimeoutMS: 30000,
   retryWrites: true,
   w: 'majority',
-  family: 4, // IPv4 для стабильности
+  family: 4,
 })
   .then(() => {
     console.log('✅ MongoDB успешно подключен');
-    // Создание промокода после успешного подключения
+    
+    // Создаём промокод после успешного подключения
     const Promo = require('./models/Promo');
     Promo.findOne({ code: 'SAT2026' })
       .then(existing => {
@@ -49,6 +64,12 @@ mongoose.connect(mongoUri, {
   })
   .catch(err => {
     console.error('❌ Ошибка подключения к MongoDB:', err.message);
-    // Раскомментируй, если хочешь авто-перезапуск контейнера при падении
-    // process.exit(1);
   });
+
+// Роуты
+app.use('/api/user', userRoutes);
+app.use('/api/promo', promoRoutes);
+app.use('/api/tasks', tasksRoutes);
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
