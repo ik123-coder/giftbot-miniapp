@@ -9,7 +9,7 @@ import Profile from './pages/Profile';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function App() {
-  const { user, loading, error, isTelegram } = useContext(UserContext);
+  const { user, loading, error } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState('home');
 
   if (loading) {
@@ -20,7 +20,7 @@ function App() {
     );
   }
 
-  if (error && isTelegram) {
+  if (error) {
     return (
       <div className="h-screen bg-black text-red-500 flex flex-col items-center justify-center p-10 text-center">
         <h2 className="text-3xl mb-6">Ошибка</h2>
