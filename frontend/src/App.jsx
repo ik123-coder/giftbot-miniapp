@@ -9,10 +9,9 @@ import Profile from './pages/Profile';
 import { motion, AnimatePresence } from 'framer-motion';
 
 function App() {
-  const { user, loading, error } = useContext(UserContext);
+  const { user, loading, error, isTelegram } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState('home');
 
-  // Заглушка загрузки
   if (loading) {
     return (
       <div style={{
@@ -29,8 +28,8 @@ function App() {
     );
   }
 
-  // Ошибка
-  if (error) {
+  // Если ошибка и это Telegram — показываем ошибку
+  if (error && isTelegram) {
     return (
       <div style={{
         height: '100vh',
@@ -53,25 +52,31 @@ function App() {
     );
   }
 
-  // Нет пользователя
-  if (!user) {
+  // Если нет пользователя и это Telegram — просим открыть через бота
+  if (!user && isTelegram) {
     return (
       <div style={{
         height: '100vh',
         background: '#000',
         color: '#fff',
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: '1.6rem',
+        padding: '40px',
         textAlign: 'center',
-        padding: '40px'
+        fontSize: '1.6rem'
       }}>
-        Данные пользователя не загружены<br />
-        Откройте через Telegram-бота
+        <h2>Добро пожаловать!</h2>
+        <p style={{ marginTop: '1.5rem' }}>
+          Откройте приложение через Telegram-бота для полной авторизации
+        </p>
       </div>
     );
   }
+
+  // Нормальный режим: либо пользователь есть, либо это браузер (демо)
+  const currentUser = user || { firstName: 'Гость', balance: 0 }; // демо-данные для браузера
 
   const pages = {
     home: <Home setActiveTab={setActiveTab} />,
