@@ -12,9 +12,7 @@ function App() {
   const { user, loading, error } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState('home');
 
-  console.log('[App] Состояние:', { loading, error: !!error, user: !!user });
-
-  // 1. Загрузка данных
+  // Заглушка загрузки
   if (loading) {
     return (
       <div style={{
@@ -22,23 +20,16 @@ function App() {
         background: '#000',
         color: '#fff',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: '2rem',
-        textAlign: 'center',
-        padding: '30px',
-        fontFamily: 'system-ui, sans-serif'
+        fontSize: '2rem'
       }}>
-        <div>Загрузка данных...</div>
-        <div style={{ fontSize: '1rem', marginTop: '20px', opacity: 0.7 }}>
-          Подождите 5–10 секунд
-        </div>
+        Загрузка...
       </div>
     );
   }
 
-  // 2. Ошибка загрузки
+  // Ошибка
   if (error) {
     return (
       <div style={{
@@ -51,19 +42,18 @@ function App() {
         justifyContent: 'center',
         padding: '40px',
         textAlign: 'center',
-        fontFamily: 'system-ui, sans-serif'
+        fontSize: '1.4rem'
       }}>
-        <h2 style={{ marginBottom: '1.5rem', fontSize: '2.2rem' }}>Ошибка</h2>
-        <p style={{ fontSize: '1.4rem', marginBottom: '1.5rem' }}>{error}</p>
-        <p style={{ fontSize: '1.1rem', opacity: 0.8, maxWidth: '80%' }}>
-          Попробуйте закрыть и заново открыть Mini App через бота.<br />
-          Если не помогает — перезапустите Telegram.
+        <h2>Ошибка</h2>
+        <p style={{ marginTop: '1rem' }}>{error}</p>
+        <p style={{ marginTop: '1.5rem', fontSize: '1rem', opacity: 0.8 }}>
+          Закройте и откройте Mini App заново через бота
         </p>
       </div>
     );
   }
 
-  // 3. Нет пользователя после загрузки
+  // Нет пользователя
   if (!user) {
     return (
       <div style={{
@@ -71,38 +61,18 @@ function App() {
         background: '#000',
         color: '#fff',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '40px',
-        textAlign: 'center',
         fontSize: '1.6rem',
-        fontFamily: 'system-ui, sans-serif'
+        textAlign: 'center',
+        padding: '40px'
       }}>
-        <h2 style={{ marginBottom: '1.5rem' }}>Добро пожаловать!</h2>
-        <p style={{ marginBottom: '2rem' }}>
-          Данные пользователя не загружены.<br />
-          Убедитесь, что открыли приложение через Telegram-бота.
-        </p>
-        <button 
-          onClick={() => window.Telegram?.WebApp?.close()}
-          style={{
-            background: '#22c55e',
-            color: 'white',
-            border: 'none',
-            padding: '15px 30px',
-            fontSize: '1.2rem',
-            borderRadius: '12px',
-            cursor: 'pointer'
-          }}
-        >
-          Закрыть и открыть заново
-        </button>
+        Данные пользователя не загружены<br />
+        Откройте через Telegram-бота
       </div>
     );
   }
 
-  // 4. Нормальный рендер приложения (когда всё загрузилось)
   const pages = {
     home: <Home setActiveTab={setActiveTab} />,
     tasks: <Tasks />,
