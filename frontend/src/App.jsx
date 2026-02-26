@@ -14,69 +14,37 @@ function App() {
 
   if (loading) {
     return (
-      <div style={{
-        height: '100vh',
-        background: '#000',
-        color: '#fff',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontSize: '2rem'
-      }}>
+      <div className="h-screen bg-black flex items-center justify-center text-white text-2xl">
         Загрузка...
       </div>
     );
   }
 
-  // Если ошибка и это Telegram — показываем ошибку
   if (error && isTelegram) {
     return (
-      <div style={{
-        height: '100vh',
-        background: '#000',
-        color: '#ff6b6b',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '40px',
-        textAlign: 'center',
-        fontSize: '1.4rem'
-      }}>
-        <h2>Ошибка</h2>
-        <p style={{ marginTop: '1rem' }}>{error}</p>
-        <p style={{ marginTop: '1.5rem', fontSize: '1rem', opacity: 0.8 }}>
+      <div className="h-screen bg-black text-red-500 flex flex-col items-center justify-center p-10 text-center">
+        <h2 className="text-3xl mb-6">Ошибка</h2>
+        <p className="text-xl mb-4">{error}</p>
+        <p className="text-base opacity-80">
           Закройте и откройте Mini App заново через бота
         </p>
       </div>
     );
   }
 
-  // Если нет пользователя и это Telegram — просим открыть через бота
   if (!user && isTelegram) {
     return (
-      <div style={{
-        height: '100vh',
-        background: '#000',
-        color: '#fff',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '40px',
-        textAlign: 'center',
-        fontSize: '1.6rem'
-      }}>
-        <h2>Добро пожаловать!</h2>
-        <p style={{ marginTop: '1.5rem' }}>
+      <div className="h-screen bg-black text-white flex flex-col items-center justify-center p-10 text-center text-xl">
+        <h2 className="mb-6">Добро пожаловать!</h2>
+        <p>
           Откройте приложение через Telegram-бота для полной авторизации
         </p>
       </div>
     );
   }
 
-  // Нормальный режим: либо пользователь есть, либо это браузер (демо)
-  const currentUser = user || { firstName: 'Гость', balance: 0 }; // демо-данные для браузера
+  // Демо-данные для браузера
+  const currentUser = user || { firstName: 'Гость', username: '', balance: 0, photoUrl: '' };
 
   const pages = {
     home: <Home setActiveTab={setActiveTab} />,
@@ -87,7 +55,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white pb-20">
+    <div className="min-h-screen bg-black text-white pb-24">
       <AnimatePresence mode="wait">
         <motion.div
           key={activeTab}
