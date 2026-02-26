@@ -4,7 +4,7 @@ import { Copy, Share2 } from 'lucide-react';
 
 const Friends = () => {
   const { user } = useContext(UserContext);
-  const refLink = `https://t.me/MaloyCSerGiftBot?startapp=ref_${user?.telegramId || ''}`;
+  const refLink = `https://t.me/crashsatbot?startapp=ref_${user?.telegramId || ''}`;
 
   const progress = user?.referredUsers?.length || 0;
 
