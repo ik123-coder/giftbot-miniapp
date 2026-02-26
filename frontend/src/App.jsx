@@ -32,26 +32,14 @@ function App() {
     );
   }
 
-  if (!user && isTelegram) {
-    return (
-      <div className="h-screen bg-black text-white flex flex-col items-center justify-center p-10 text-center text-xl">
-        <h2 className="mb-6">Добро пожаловать!</h2>
-        <p>
-          Откройте приложение через Telegram-бота для полной авторизации
-        </p>
-      </div>
-    );
-  }
-
-  // Демо-данные для браузера
   const currentUser = user || { firstName: 'Гость', username: '', balance: 0, photoUrl: '' };
 
   const pages = {
-    home: <Home setActiveTab={setActiveTab} />,
+    home: <Home setActiveTab={setActiveTab} user={currentUser} />,
     tasks: <Tasks />,
     shop: <Shop />,
     friends: <Friends />,
-    profile: <Profile />
+    profile: <Profile user={currentUser} />
   };
 
   return (
