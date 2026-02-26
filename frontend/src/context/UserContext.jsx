@@ -8,50 +8,37 @@ export const UserProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const API_URL = import.meta.env.VITE_API_URL || 'https://giftbot-miniapp-production.up.railway.app'; // твой backend-домен
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  useEffect(() => {
-    console.log('[UserContext] useEffect запущен');
-
+  const fetchUser = async () => {
     const tg = window.Telegram?.WebApp;
     if (!tg) {
-      console.warn('[UserContext] Telegram.WebApp не найден');
       setError('Приложение открыто не в Telegram Mini App');
       setLoading(false);
       return;
     }
 
-    tg.ready();
-    tg.expand();
-
-    const initData = tg.initData || '';
-    console.log('[UserContext] initData длина:', initData.length);
-
+    const initData = tg.initData;
     if (!initData) {
-      console.warn('[UserContext] initData пустая');
       setError('Нет данных авторизации от Telegram');
       setLoading(false);
       return;
     }
 
-    const fetchUser = async () => {
-      try {
-        console.log('[UserContext] Запрос на backend:', `${API_URL}/api/user/init`);
-        const res = await axios.post(`${API_URL}/api/user/init`, { initData }, {
-          timeout: 15000 // таймаут 15 сек
-        });
-        console.log('[UserContext] Данные пользователя получены:', res.data);
-        setUser(res.data);
-        setError(null);
-      } catch (e) {
-        console.error('[UserContext] Ошибка запроса:', e.message);
-        if (e.response) console.error('[UserContext] Ответ сервера:', e.response.data);
-        setError('Не удалось загрузить данные. Попробуйте перезапустить Mini App');
-      } finally {
-        setLoading(false);
-      }
-    };
+    try {
+      const res = await axios.post(`${API_URL}/api/user/init`, { initData });
+      setUser(res.data);
+      setError(null);
+    } catch (e) {
+      setError('Не удалось загрузить данные пользователя');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    window.Telegram?.WebApp?.ready();
+    window.Telegram?.WebApp?.expand();
     fetchUser();
   }, []);
 
