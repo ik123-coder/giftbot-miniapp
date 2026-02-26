@@ -1,48 +1,67 @@
 import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { Coins } from 'lucide-react';
-import PromoCode from '../components/PromoCode';
 
 const Home = ({ setActiveTab }) => {
   const { user } = useContext(UserContext);
+  const currentUser = user || { firstName: 'Гость', username: '', balance: 0, photoUrl: '' };
 
   return (
     <div className="p-5 pb-24">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-4">
-          <img src={user?.photoUrl} className="w-14 h-14 rounded-full ring-2 ring-green-500" />
+          <div className="relative">
+            <img 
+              src={currentUser.photoUrl || 'https://via.placeholder.com/56'} 
+              alt="Avatar" 
+              className="w-14 h-14 rounded-full object-cover ring-2 ring-green-500/50"
+            />
+          </div>
           <div>
-            <div className="text-xl font-medium">Добро пожаловать,</div>
-            <div className="text-2xl font-bold">{user?.firstName}</div>
+            <p className="text-white/80 text-sm">Добро пожаловать,</p>
+            <p className="text-white text-2xl font-bold bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+              {currentUser.firstName}
+            </p>
+            <p className="text-white/60 text-sm">@{currentUser.username || 'guest'}</p>
           </div>
         </div>
-        <div className="bg-[#1a1a1a] rounded-2xl px-5 py-3 flex items-center gap-2">
+
+        <div className="bg-gradient-to-br from-gray-900 to-black rounded-2xl px-5 py-3 flex items-center gap-2 border border-green-500/20">
           <Coins className="text-green-500" size={28} />
-          <div className="text-2xl font-bold">{user?.balance || 0}</div>
+          <span className="text-2xl font-bold text-white">{currentUser.balance || 0}</span>
         </div>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div onClick={() => setActiveTab('tasks')} className="bg-[#1a1a1a] rounded-3xl p-6 text-center cursor-pointer active:scale-95 transition">
-          <div className="text-5xl mb-4">✅</div>
-          <div className="font-semibold">Задания</div>
-          <div className="text-sm text-gray-400">Выполняй и зарабатывай</div>
-        </div>
+        <button 
+          onClick={() => setActiveTab('tasks')}
+          className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 text-center border border-green-500/20 hover:border-green-500/40 transition-all active:scale-95"
+        >
+          <div className="text-5xl mb-3">✅</div>
+          <p className="font-semibold text-lg">Задания</p>
+          <p className="text-sm text-white/60">Выполняй и зарабатывай</p>
+        </button>
 
-        <div onClick={() => setActiveTab('shop')} className="bg-[#1a1a1a] rounded-3xl p-6 text-center cursor-pointer active:scale-95 transition">
-          <div className="text-5xl mb-4">🛒</div>
-          <div className="font-semibold">Магазин</div>
-          <div className="text-sm text-gray-400">Трать монеты</div>
-        </div>
+        <button 
+          onClick={() => setActiveTab('shop')}
+          className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 text-center border border-green-500/20 hover:border-green-500/40 transition-all active:scale-95"
+        >
+          <div className="text-5xl mb-3">🛒</div>
+          <p className="font-semibold text-lg">Магазин</p>
+          <p className="text-sm text-white/60">Трать монеты</p>
+        </button>
 
-        <div onClick={() => setActiveTab('friends')} className="bg-[#1a1a1a] rounded-3xl p-6 text-center cursor-pointer active:scale-95 transition">
-          <div className="text-5xl mb-4">👥</div>
-          <div className="font-semibold">Рефералы</div>
-          <div className="text-sm text-gray-400">Приглашай друзей</div>
-        </div>
+        <button 
+          onClick={() => setActiveTab('friends')}
+          className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 text-center border border-green-500/20 hover:border-green-500/40 transition-all active:scale-95"
+        >
+          <div className="text-5xl mb-3">👥</div>
+          <p className="font-semibold text-lg">Рефералы</p>
+          <p className="text-sm text-white/60">Приглашай друзей</p>
+        </button>
       </div>
 
-      <PromoCode />
+      {/* Промокод на главной — убрал, теперь только в Профиле */}
     </div>
   );
 };
