@@ -21,18 +21,19 @@ const connectDB = async (retries = 5, delay = 5000) => {
     try {
       console.log(`Попытка подключения к MongoDB (${i + 1}/${retries})...`);
       await mongoose.connect(PUBLIC_MONGO_URI, {
-        serverSelectionTimeoutMS: 30000,
-        socketTimeoutMS: 90000,
-        connectTimeoutMS: 30000,
+        serverSelectionTimeoutMS: 30000,     // 30 сек на выбор сервера
+        socketTimeoutMS: 90000,              // 90 сек на сокет
+        connectTimeoutMS: 30000,             // 30 сек на начальное соединение
         retryWrites: true,
         w: 'majority',
-        family: 4,
-        keepAlive: true,
-        keepAliveInitialDelay: 300000,
+        family: 4,                           // IPv4 для стабильности
+        maxPoolSize: 10,
+        minPoolSize: 2,
+        heartbeatFrequencyMS: 10000,
       });
       console.log('✅ MongoDB успешно подключен');
       
-      // Создаём стартовый промокод
+      // Создаём стартовый промокод после успешного подключения
       const Promo = require('./models/Promo');
       const existing = await Promo.findOne({ code: 'SAT2026' });
       if (!existing) {
@@ -42,7 +43,7 @@ const connectDB = async (retries = 5, delay = 5000) => {
         console.log('Промокод SAT2026 уже существует');
       }
       
-      return; // Успех — выходим из функции
+      return; // Успех
     } catch (err) {
       console.error('❌ Ошибка подключения к MongoDB:', err.message);
       if (i < retries - 1) {
@@ -52,13 +53,13 @@ const connectDB = async (retries = 5, delay = 5000) => {
     }
   }
   console.error('❌ Не удалось подключиться к MongoDB после всех попыток');
-  // process.exit(1); // раскомментируй, если хочешь, чтобы контейнер падал при неудаче
+  // process.exit(1); // раскомментируй, если хочешь авто-перезапуск контейнера
 };
 
 // Запускаем подключение
 connectDB();
 
-// Роуты (даже если база не подключилась — сервер работает)
+// Роуты (сервер работает даже если база не подключилась)
 app.use('/api/user', userRoutes);
 app.use('/api/promo', promoRoutes);
 app.use('/api/tasks', tasksRoutes);
