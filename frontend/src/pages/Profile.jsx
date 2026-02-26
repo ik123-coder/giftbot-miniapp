@@ -8,23 +8,23 @@ const Profile = ({ user }) => {
   };
 
   return (
-    <div className="p-5 pb-32">
+    <div className="p-6 pb-32">
       <div className="flex flex-col items-center pt-10">
         <div className="relative">
           <img
             src={currentUser.photoUrl || 'https://via.placeholder.com/128'}
             alt="Avatar"
-            className="w-32 h-32 rounded-full object-cover ring-4 ring-green-500/30 shadow-xl shadow-green-500/20"
+            className="w-32 h-32 rounded-full object-cover ring-4 ring-green-500/30 shadow-2xl shadow-green-500/20"
           />
         </div>
-        <h1 className="text-4xl font-bold mt-6 bg-gradient-to-r from-green-400 to-emerald-500 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold mt-6 bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 bg-clip-text text-transparent">
           {currentUser.firstName}
         </h1>
         <p className="text-green-400 mt-2 text-xl">@{currentUser.username || 'guest'}</p>
       </div>
 
       <div className="mt-12 space-y-6">
-        <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 border border-green-500/20 shadow-lg">
+        <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 border border-green-500/20 shadow-lg shadow-black/50">
           <div className="flex items-center gap-4">
             <div className="bg-green-500/20 p-4 rounded-2xl">
               <Users className="text-green-500" size={32} />
@@ -36,7 +36,7 @@ const Profile = ({ user }) => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 border border-green-500/20 shadow-lg">
+        <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 border border-green-500/20 shadow-lg shadow-black/50">
           <div className="flex items-center gap-4">
             <div className="bg-green-500/20 p-4 rounded-2xl">
               <Calendar className="text-green-500" size={32} />
@@ -50,7 +50,7 @@ const Profile = ({ user }) => {
       </div>
 
       {/* Промокод */}
-      <div className="mt-10 bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 border border-green-500/20 shadow-lg">
+      <div className="mt-10 bg-gradient-to-br from-gray-900 to-black rounded-3xl p-6 border border-green-500/20 shadow-lg shadow-black/50">
         <div className="flex items-center gap-4 mb-4">
           <div className="bg-green-500/20 p-4 rounded-2xl">
             <Gift className="text-green-500" size={32} />
