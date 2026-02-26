@@ -1,15 +1,77 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { UserProvider } from './context/UserContext';
+import { useContext } from 'react';
+import { UserContext } from './context/UserContext';
 import BottomNav from './components/BottomNav';
 import Home from './pages/Home';
 import Tasks from './pages/Tasks';
 import Shop from './pages/Shop';
 import Friends from './pages/Friends';
 import Profile from './pages/Profile';
+import { motion, AnimatePresence } from 'framer-motion';
 
 function AppContent() {
+  const { user, loading, error } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState('home');
+
+  // Заглушка на время загрузки
+  if (loading) {
+    return (
+      <div style={{
+        height: '100vh',
+        background: '#000',
+        color: '#fff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '1.5rem',
+        fontFamily: 'system-ui'
+      }}>
+        Загрузка данных...
+      </div>
+    );
+  }
+
+  // Ошибка загрузки пользователя
+  if (error) {
+    return (
+      <div style={{
+        height: '100vh',
+        background: '#000',
+        color: '#ff6b6b',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
+        textAlign: 'center',
+        fontFamily: 'system-ui'
+      }}>
+        <h2 style={{ marginBottom: '1rem' }}>Ошибка</h2>
+        <p>{error}</p>
+        <p style={{ marginTop: '1rem', fontSize: '1rem', opacity: 0.8 }}>
+          Попробуйте перезапустить Mini App или открыть заново через бота
+        </p>
+      </div>
+    );
+  }
+
+  // Нет пользователя после загрузки
+  if (!user) {
+    return (
+      <div style={{
+        height: '100vh',
+        background: '#000',
+        color: '#fff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '1.5rem',
+        textAlign: 'center',
+        padding: '20px'
+      }}>
+        Данные пользователя не загружены. Откройте приложение через Telegram-бота.
+      </div>
+    );
+  }
 
   const pages = {
     home: <Home setActiveTab={setActiveTab} />,
@@ -39,9 +101,5 @@ function AppContent() {
 }
 
 export default function App() {
-  return (
-    <UserProvider>
-      <AppContent />
-    </UserProvider>
-  );
+  return <AppContent />;
 }
