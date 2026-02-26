@@ -7,24 +7,34 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isTelegram, setIsTelegram] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const fetchUser = async () => {
+  useEffect(() => {
     const tg = window.Telegram?.WebApp;
-    if (!tg) {
-      setError('Приложение открыто не в Telegram Mini App');
-      setLoading(false);
-      return;
-    }
+    if (tg) {
+      setIsTelegram(true);
+      tg.ready();
+      tg.expand();
 
-    const initData = tg.initData;
-    if (!initData) {
-      setError('Нет данных авторизации от Telegram');
+      const initData = tg.initData;
+      if (initData) {
+        fetchUser(initData);
+      } else {
+        setError('Нет данных авторизации от Telegram');
+        setLoading(false);
+      }
+    } else {
+      // Открыто в обычном браузере — пропускаем авторизацию
+      setIsTelegram(false);
       setLoading(false);
-      return;
+      // Можно задать демо-юзера, если хочешь
+      // setUser({ firstName: 'Гость', balance: 0 });
     }
+  }, []);
 
+  const fetchUser = async (initData) => {
     try {
       const res = await axios.post(`${API_URL}/api/user/init`, { initData });
       setUser(res.data);
@@ -36,16 +46,10 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    window.Telegram?.WebApp?.ready();
-    window.Telegram?.WebApp?.expand();
-    fetchUser();
-  }, []);
-
   const updateUser = (newData) => setUser(prev => ({ ...prev, ...newData }));
 
   return (
-    <UserContext.Provider value={{ user, loading, error, updateUser, API_URL }}>
+    <UserContext.Provider value={{ user, loading, error, updateUser, API_URL, isTelegram }}>
       {children}
     </UserContext.Provider>
   );
