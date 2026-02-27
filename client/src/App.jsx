@@ -1,8 +1,11 @@
 // client/src/App.jsx
 import { useEffect, useState } from 'react';
+
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import MainMenu from './components/MainMenu';
+
+// Импортируем страницы
 import Profile from './pages/Profile';
 import Tasks from './pages/Tasks';
 import Shop from './pages/Shop';
@@ -12,7 +15,7 @@ import Referrals from './pages/Referrals';
 function App() {
   const [page, setPage] = useState('main');
   const [user, setUser] = useState(null);
-  const [balance, setBalance] = useState(500); // начальный баланс, потом будет из бэкенда
+  const [balance, setBalance] = useState(500);
 
   useEffect(() => {
     if (window.Telegram?.WebApp) {
@@ -23,10 +26,6 @@ function App() {
       const initUser = tg.initDataUnsafe?.user;
       if (initUser) {
         setUser(initUser);
-        // Здесь можно потом добавить запрос на реальный баланс с сервера
-        // fetch('/api/user/profile', { headers: { 'x-init-data': tg.initData } })
-        //   .then(res => res.json())
-        //   .then(data => setBalance(data.balance || 500));
       }
     }
   }, []);
@@ -39,9 +38,9 @@ function App() {
         return <MainMenu setPage={setPage} />;
 
       case 'profile':
-        return <Profile />;  // ← именно здесь вызывается Profile
+        return <Profile />;           // ← Это обязательно должно быть здесь
 
-      // Все остальные страницы — заглушка "Пока недоступно"
+      // Все остальные страницы — заглушка
       case 'tasks':
       case 'shop':
       case 'giveaways':
@@ -64,19 +63,16 @@ function App() {
 
   return (
     <div className="min-h-screen text-white flex flex-col relative">
-      {/* Шапка */}
       <Header 
         firstName={firstName} 
         balance={balance} 
         photoUrl={user?.photo_url} 
       />
 
-      {/* Основной контент */}
       <main className="flex-1 overflow-y-auto pb-28">
         {renderContent()}
       </main>
 
-      {/* Нижнее меню */}
       <BottomNav currentPage={page} setPage={setPage} />
     </div>
   );
