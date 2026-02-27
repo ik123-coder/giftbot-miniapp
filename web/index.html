@@ -11,33 +11,59 @@
 
 <div id="app">
 
-  <!-- HEADER -->
-  <div class="header">
-    <div class="user-block">
-      <img id="avatar" class="avatar" />
-      <div class="user-text">
-        <span class="welcome">Добро пожаловать,</span>
-        <span id="firstName" class="name"></span>
+  <!-- SCREENS -->
+  <div class="screens">
+
+    <!-- HOME -->
+    <div class="screen active" id="home">
+      <div class="header">
+        <div class="user-block">
+          <img id="avatar" class="avatar" />
+          <div class="user-text">
+            <span class="welcome">Добро пожаловать,</span>
+            <span id="firstName" class="name"></span>
+          </div>
+        </div>
+
+        <div class="balance">
+          <span id="balanceValue">500</span>
+        </div>
+      </div>
+
+      <div class="menu-grid">
+        <div class="card" data-page="tasks">Задания</div>
+        <div class="card" data-page="shop">Магазин</div>
+        <div class="card" data-page="giveaways">Розыгрыши</div>
+        <div class="card" data-page="friends">Рефералы</div>
       </div>
     </div>
 
-    <div class="balance">
-      <span id="balanceValue">500</span>
+    <!-- TASKS -->
+    <div class="screen" id="tasks">
+      <h2>Задания</h2>
     </div>
-  </div>
 
-  <!-- GRID MENU -->
-  <div class="menu-grid">
-    <div class="card" data-page="tasks">Задания</div>
-    <div class="card" data-page="shop">Магазин</div>
-    <div class="card" data-page="giveaways">Розыгрыши</div>
-    <div class="card" data-page="referrals">Рефералы</div>
+    <!-- SHOP -->
+    <div class="screen" id="shop">
+      <h2>Магазин</h2>
+    </div>
+
+    <!-- FRIENDS -->
+    <div class="screen" id="friends">
+      <h2>Рефералы</h2>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="screen" id="profile">
+      <h2>Профиль</h2>
+    </div>
+
   </div>
 
   <!-- TOAST -->
   <div id="toast" class="toast">Пока недоступно</div>
 
-  <!-- TAB BAR -->
+  <!-- TABBAR -->
   <div class="tabbar">
     <div class="tab active" data-tab="home">Главная</div>
     <div class="tab" data-tab="tasks">Задания</div>
