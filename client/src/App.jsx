@@ -2,10 +2,6 @@ import { useEffect, useState } from 'react';
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import MainMenu from './components/MainMenu';
-import Tasks from './pages/Tasks';
-import Shop from './pages/Shop';
-import Giveaways from './pages/Giveaways';
-import Referrals from './pages/Referrals';
 import Profile from './pages/Profile';
 
 function App() {
@@ -22,31 +18,48 @@ function App() {
       const initUser = tg.initDataUnsafe?.user;
       if (initUser) {
         setUser(initUser);
-        // Здесь можно fetch реального баланса с бэкенда
-        // fetchProfile().then(data => setBalance(data.balance));
+        // Можно позже подключить реальный fetch баланса
       }
     }
   }, []);
 
   const firstName = user?.first_name || 'Гость';
 
-  const renderPage = () => {
-    switch (page) {
-      case 'tasks':     return <Tasks />;
-      case 'shop':      return <Shop />;
-      case 'giveaways': return <Giveaways />;
-      case 'referrals': return <Referrals />;
-      case 'profile':   return <Profile user={user} balance={balance} />;
-      default:          return <MainMenu setPage={setPage} />;
+  const renderContent = () => {
+    if (page === 'main') {
+      return <MainMenu setPage={setPage} />;
     }
+
+    if (page === 'profile') {
+      return <Profile user={user} balance={balance} />;
+    }
+
+    // Все остальные страницы пока заблокированы
+    if (['tasks', 'shop', 'giveaways', 'referrals'].includes(page)) {
+      return (
+        <div className="flex flex-col items-center justify-center h-full mt-20 px-6 text-center">
+          <div className="text-6xl mb-6">🔒</div>
+          <h2 className="text-3xl font-bold text-red-500 mb-4">
+            Пока недоступно!
+          </h2>
+          <p className="text-gray-400 text-lg">
+            Этот раздел находится в разработке.<br />
+            Скоро станет доступен.
+          </p>
+        </div>
+      );
+    }
+
+    // На всякий случай fallback
+    return <MainMenu setPage={setPage} />;
   };
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       <Header firstName={firstName} balance={balance} photoUrl={user?.photo_url} />
-      
-      <main className="flex-1 overflow-y-auto pb-20">
-        {renderPage()}
+
+      <main className="flex-1 overflow-y-auto pb-24">
+        {renderContent()}
       </main>
 
       <BottomNav currentPage={page} setPage={setPage} />
