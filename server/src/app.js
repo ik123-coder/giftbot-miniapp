@@ -27,30 +27,23 @@ app.post('/api/checkMembership', async (req, res) => {
   const { chatId, userId } = req.body;
   const botToken = process.env.BOT_TOKEN;
 
-  if (!botToken) {
-    return res.status(500).json({ error: 'BOT_TOKEN не задан в переменных окружения' });
-  }
+  if (!botToken) return res.status(500).json({ error: 'BOT_TOKEN не задан' });
 
   try {
-    const response = await require('axios').get(`https://api.telegram.org/bot${botToken}/getChatMember`, {
-      params: {
-        chat_id: chatId,
-        user_id: userId,
-      },
+    const axios = require('axios');
+    const response = await axios.get(`https://api.telegram.org/bot${botToken}/getChatMember`, {
+      params: { chat_id: chatId, user_id: userId },
     });
 
     const data = response.data;
-
-    if (!data.ok) {
-      return res.json({ subscribed: false });
-    }
+    if (!data.ok) return res.json({ subscribed: false });
 
     const status = data.result.status;
     const subscribed = ['member', 'administrator', 'creator'].includes(status);
 
     res.json({ subscribed });
   } catch (error) {
-    console.error('Ошибка проверки подписки:', error.message);
+    console.error('Ошибка:', error.message);
     res.json({ subscribed: false });
   }
 });
