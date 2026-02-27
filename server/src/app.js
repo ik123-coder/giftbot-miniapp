@@ -1,9 +1,8 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const { port, mongoUri, botToken } = require('./config');
 const errorHandler = require('./middleware/errorHandler');
-
 const apiRoutes = require('./routes/index');
 
 const app = express();
@@ -11,8 +10,8 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-// Подключение БД
-connectDB();
+// Подключение к MongoDB
+connectDB(mongoUri);
 
 // Роуты
 app.use('/api', apiRoutes);
@@ -22,10 +21,9 @@ app.get('/', (req, res) => {
   res.json({ message: 'GiftBot API v1.0 - running' });
 });
 
-// Новый маршрут для проверки подписки на канал (добавлен сюда)
+// Проверка подписки на канал
 app.post('/api/checkMembership', async (req, res) => {
   const { chatId, userId } = req.body;
-  const botToken = process.env.BOT_TOKEN;
 
   if (!botToken) return res.status(500).json({ error: 'BOT_TOKEN не задан' });
 
@@ -51,7 +49,7 @@ app.post('/api/checkMembership', async (req, res) => {
 // Обработка ошибок
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// Старт сервера
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });
