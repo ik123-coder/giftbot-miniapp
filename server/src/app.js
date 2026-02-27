@@ -1,12 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('../config/db');
+const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 
 const apiRoutes = require('./routes/index');
 
 const app = express();
+
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
@@ -21,7 +22,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'GiftBot API v1.0 - running' });
 });
 
-// Маршрут для проверки подписки на канал
+// Новый маршрут для проверки подписки на канал (добавлен сюда)
 app.post('/api/checkMembership', async (req, res) => {
   const { chatId, userId } = req.body;
   const botToken = process.env.BOT_TOKEN;
