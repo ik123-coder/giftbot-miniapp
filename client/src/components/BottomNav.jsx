@@ -31,11 +31,11 @@ export default function BottomNav({ currentPage, setPage }) {
               className={`w-7 h-7 ${
                 isActive 
                   ? 'text-[#00ff9d] drop-shadow-[0_0_8px_rgba(0,255,157,0.6)]' 
-                  : 'text-gray-300' // ← светлее серый
+                  : 'text-gray-100' // ← светлее серый
               }`} 
             />
             <span className={`text-xs font-medium ${
-              isActive ? 'text-[#00ff9d]' : 'text-gray-300' // ← текст тоже светлее
+              isActive ? 'text-[#00ff9d]' : 'text-gray-100' // ← текст тоже светлее
             }`}>
               {item.label}
             </span>
