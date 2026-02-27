@@ -1,35 +1,35 @@
-export default function Profile({ user, balance }) {
+import { useUser } from '../context/UserContext';
+
+export default function Profile() {
+  const { user, balance, loading } = useUser();
+
+  if (loading) return <div className="text-center py-20">Загрузка...</div>;
+
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6 text-center">Профиль</h2>
+      <h2 className="text-3xl font-bold mb-8 text-center">Профиль</h2>
 
-      <div className="bg-gray-900/70 border border-gray-800 rounded-2xl p-8 text-center">
+      <div className="bg-[#0f1115] border border-[#1a1f25] rounded-3xl p-10 text-center">
         {user?.photo_url ? (
           <img
             src={user.photo_url}
-            alt="Аватар"
-            className="w-28 h-28 rounded-full mx-auto mb-5 border-4 border-[#00ff9d]/40 object-cover shadow-lg shadow-[#00ff9d]/20"
+            alt="avatar"
+            className="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-[#00ff9d]/40"
           />
         ) : (
-          <div className="w-28 h-28 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 mx-auto mb-5 flex items-center justify-center text-5xl shadow-lg">
+          <div className="w-32 h-32 rounded-full bg-gray-800 mx-auto mb-6 flex items-center justify-center text-6xl">
             👤
           </div>
         )}
 
-        <div className="text-2xl font-bold mb-1">{user?.first_name || 'Гость'}</div>
-        <div className="text-gray-400 mb-8">
-          @{user?.username || 'нет username'}
-        </div>
+        <div className="text-3xl font-bold mb-2">{user?.first_name || 'Гость'}</div>
+        <div className="text-gray-400 mb-10">@{user?.username || 'нет имени'}</div>
 
-        <div className="bg-black/50 rounded-xl p-6 border border-gray-800">
-          <div className="text-5xl font-extrabold text-[#00ff9d] mb-2">
+        <div className="bg-black/50 rounded-2xl p-8 border border-gray-800">
+          <div className="text-6xl font-black text-[#00ff9d] mb-3">
             {balance.toLocaleString()}
           </div>
-          <div className="text-gray-300 text-lg">монет</div>
-        </div>
-
-        <div className="mt-10 text-sm text-gray-500">
-          Присоединился: {new Date().toLocaleDateString('ru-RU')}
+          <div className="text-xl text-gray-300">монет</div>
         </div>
       </div>
     </div>
