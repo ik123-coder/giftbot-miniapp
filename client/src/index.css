@@ -8,3 +8,20 @@ body {
   background: black;
   color: white;
 }
+/* Фон на всё приложение — твоя картинка */
+body, html, #root {
+  background-image: url('/bg.jpg');          /* имя твоей картинки */
+  background-size: cover;                    /* растягивает на весь экран */
+  background-position: center;               /* центрирует */
+  background-repeat: no-repeat;              /* не повторять */
+  background-attachment: fixed;              /* фиксированный фон при скролле */
+}
+
+/* Чтобы контент не сливался с фоном — лёгкая тёмная подложка */
+#root::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);           /* тёмный полупрозрачный слой */
+  z-index: -1;                               /* под всем контентом */
+}
