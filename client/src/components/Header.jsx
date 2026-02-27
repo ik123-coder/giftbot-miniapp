@@ -28,9 +28,11 @@ export default function Header({ firstName, balance, photoUrl }) {
           flex items-center gap-1
           px-4 py-2
           rounded-full
-          bg-[#2b2b2b]
+          bg-white/10
+          backdrop-blur-md
+          border border-white/20
+          shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]
           text-white
-          shadow-[0_0_8px_rgba(0,255,157,0.6),0_0_22px_rgba(0,255,157,0.35)]
         "
       >
         <span className="text-green-400 text-lg">$</span>
