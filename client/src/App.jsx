@@ -38,10 +38,12 @@ function App() {
         return <MainMenu setPage={setPage} />;
 
       case 'profile':
-        return <Profile />;  // ← Это ключевая строка — именно она показывает Профиль
+        return <Profile />;
+
+      case 'tasks':
+        return <Tasks balance={balance} setBalance={setBalance} />; // ← добавлено: страница Задания с балансом
 
       // Заглушка для остальных страниц
-      case 'tasks':
       case 'shop':
       case 'giveaways':
       case 'referrals':
