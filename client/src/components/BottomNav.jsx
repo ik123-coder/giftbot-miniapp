@@ -13,7 +13,7 @@ export default function BottomNav({ currentPage, setPage }) {
   const handleClick = (id) => {
     // Мягкая вибрация как на iPhone (тихий отклик клавиатуры)
     if (window.Telegram?.WebApp?.HapticFeedback) {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
       // Альтернативы, если 'soft' покажется не тем:
       // 'light' — ещё легче и короче
       // 'rigid' — чуть жёстче
