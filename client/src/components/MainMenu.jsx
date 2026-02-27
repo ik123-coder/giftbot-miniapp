@@ -11,7 +11,7 @@ export default function MainMenu({ setPage }) {
         {/* Постоянный мигающий зелёный размытый фон */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
         
-        <Icon name="tasks" className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
+        <Icon name="tasks" className="w-12 h-12 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
         <span className="text-lg font-medium text-white relative z-10">Задания</span>
         <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
           Выполняй и<br />зарабатывай
@@ -25,7 +25,7 @@ export default function MainMenu({ setPage }) {
       >
         <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
         
-        <Icon name="shop" className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
+        <Icon name="shop" className="w-12 h-12 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
         <span className="text-lg font-medium text-white relative z-10">Магазин</span>
         <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
           Трать<br />монеты
@@ -39,7 +39,7 @@ export default function MainMenu({ setPage }) {
       >
         <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
         
-        <Icon name="giveaways" className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
+        <Icon name="giveaways" className="w-12 h-12 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
         <span className="text-lg font-medium text-white relative z-10">Розыгрыши</span>
         <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
           Испытай<br />удачу
@@ -53,7 +53,7 @@ export default function MainMenu({ setPage }) {
       >
         <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
         
-        <Icon name="referrals" className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
+        <Icon name="referrals" className="w-12 h-12 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
         <span className="text-lg font-medium text-white relative z-10">Рефералы</span>
         <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
           Приглашай<br />друзей
