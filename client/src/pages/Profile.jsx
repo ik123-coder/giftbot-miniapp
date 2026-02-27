@@ -1,6 +1,4 @@
 // client/src/pages/Profile.jsx
-import { useUser } from '../context/UserContext';
-
 export default function Profile() {
   const { user, balance, loading } = useUser();
 
