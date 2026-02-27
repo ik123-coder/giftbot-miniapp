@@ -3,11 +3,14 @@ import { useState } from 'react';
 import checkIcon from '../assets/icons/check.svg';
 import crossIcon from '../assets/icons/cross.svg';
 import telegramIcon from '../assets/icons/telegram.svg';
-import chatIcon from '../assets/icons/chat.svg';
 
-export default function Tasks({ balance, setBalance, tasksCompleted, setTasksCompleted }) {
+export default function Tasks({ balance, setBalance, userId }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeTask, setActiveTask] = useState(null);
+  const [tasksCompleted, setTasksCompleted] = useState({
+    telegram: false,
+  });
+  const [showError, setShowError] = useState(false);
 
   const tasks = [
     {
@@ -16,17 +19,10 @@ export default function Tasks({ balance, setBalance, tasksCompleted, setTasksCom
       description: 'Подпишись на тг @broketalking',
       reward: 500,
       link: 'https://t.me/broketalking',
+      chatId: '@broketalking',
+      errorText: 'Вы не подписаны',
       status: tasksCompleted.telegram ? 'Выполнено' : 'Не выполнено',
       icon: telegramIcon,
-    },
-    {
-      id: 'chat',
-      title: 'Вступить в чат',
-      description: 'Вступи в чат Satanic',
-      reward: 500,
-      link: 'https://t.me/drainself',
-      status: tasksCompleted.chat ? 'Выполнено' : 'Не выполнено',
-      icon: chatIcon,
     },
   ];
 
@@ -46,14 +42,36 @@ export default function Tasks({ balance, setBalance, tasksCompleted, setTasksCom
     }
   };
 
-  const handleClaimReward = () => {
-    if (activeTask) {
-      setBalance(prev => prev + activeTask.reward);
-      setTasksCompleted(prev => ({
-        ...prev,
-        [activeTask.id]: true,
-      }));
-      closeModal();
+  const handleCheck = async () => {
+    if (!activeTask || !userId) {
+      setShowError(true);
+      setTimeout(() => setShowError(false), 3000);
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/checkMembership', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chatId: activeTask.chatId, userId }),
+      });
+      const data = await response.json();
+
+      if (data.subscribed) {
+        setBalance(prev => prev + activeTask.reward);
+        setTasksCompleted(prev => ({
+          ...prev,
+          [activeTask.id]: true,
+        }));
+        closeModal();
+      } else {
+        setShowError(true);
+        setTimeout(() => setShowError(false), 3000);
+      }
+    } catch (error) {
+      console.error('Ошибка проверки:', error);
+      setShowError(true);
+      setTimeout(() => setShowError(false), 3000);
     }
   };
 
@@ -61,7 +79,7 @@ export default function Tasks({ balance, setBalance, tasksCompleted, setTasksCom
     <div className="p-6 pt-10 min-h-screen">
       <h1 className="text-3xl font-bold text-[#00ff9d] mb-8 text-center">Задания</h1>
 
-      {/* Карточки заданий */}
+      {/* Карточки заданий — уменьшенные, помещаются 2 в ряд на больших экранах */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-[85%] mx-auto">
         {tasks.map(task => (
           <button
@@ -69,8 +87,10 @@ export default function Tasks({ balance, setBalance, tasksCompleted, setTasksCom
             onClick={() => openModal(task)}
             className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-5 flex flex-col items-center gap-3 overflow-hidden active:scale-95 transition-all duration-200 shadow-lg shadow-black/30"
           >
+            {/* Фон карточки */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/8 via-transparent to-[#00ff9d]/5 blur-xl pointer-events-none"></div>
 
+            {/* Иконка задачи */}
             <div className="relative z-10 w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center overflow-hidden">
               <img 
                 src={task.icon}
@@ -81,6 +101,7 @@ export default function Tasks({ balance, setBalance, tasksCompleted, setTasksCom
 
             <span className="text-lg font-medium text-white relative z-10">{task.title}</span>
 
+            {/* Статус с SVG */}
             <div className={`flex items-center gap-2 px-4 py-1 rounded-full relative z-10 ${
               task.status === 'Выполнено' ? 'bg-green-600/30 text-green-400' : 'bg-red-600/30 text-red-400'
             }`}>
@@ -107,58 +128,51 @@ export default function Tasks({ balance, setBalance, tasksCompleted, setTasksCom
             if (e.target === e.currentTarget) closeModal();
           }}
         >
-          <div 
-            className="bg-[#1c1f24] rounded-3xl w-[85%] max-w-[360px] max-h-[70vh] overflow-y-auto animate-popIn touch-pan-y"
-            onTouchStart={(e) => {
-              const startY = e.touches[0].clientY;
-              const handleTouchMove = (e) => {
-                if (e.touches[0].clientY - startY > 80) {
-                  closeModal();
-                  document.removeEventListener('touchmove', handleTouchMove);
-                }
-              };
-              document.addEventListener('touchmove', handleTouchMove, { passive: true });
-              e.currentTarget.addEventListener('touchend', () => {
-                document.removeEventListener('touchmove', handleTouchMove);
-              }, { once: true });
-            }}
-          >
-            <div className="p-5">
-              <div className="flex justify-between items-center mb-5">
-                <h2 className="text-xl font-bold text-white">{activeTask.title}</h2>
-                <button onClick={closeModal} className="text-gray-400 hover:text-white text-xl">✕</button>
-              </div>
-
-              <p className="text-gray-300 mb-5 text-sm">{activeTask.description}</p>
-
-              <div className="flex flex-col gap-3">
-                {tasksCompleted[activeTask.id] ? (
-                  <button
-                    disabled
-                    className="bg-gray-700 text-gray-400 font-medium py-3 rounded-xl cursor-not-allowed flex items-center justify-center gap-2"
-                  >
-                    <img src={checkIcon} alt="check" className="w-5 h-5" />
-                    Награда получена
-                  </button>
-                ) : (
-                  <>
-                    <button
-                      onClick={handleSubscribe}
-                      className="bg-[#00ff9d] text-black font-medium py-3 rounded-xl hover:bg-[#00e68c] transition flex items-center justify-center gap-2"
-                    >
-                      {activeTask.id === 'telegram' ? 'Подписаться на ТГ' : 'Вступить в чат'}
-                    </button>
-
-                    <button
-                      onClick={handleClaimReward}
-                      className="bg-gray-700 text-white font-medium py-3 rounded-xl hover:bg-gray-600 transition flex items-center justify-center gap-2"
-                    >
-                      Проверить
-                    </button>
-                  </>
-                )}
-              </div>
+          <div className="bg-[#1c1f24] rounded-3xl w-[85%] max-w-[360px] p-6">
+            <div className="flex justify-between items-center mb-5">
+              <h2 className="text-xl font-bold text-white">{activeTask.title}</h2>
+              <button onClick={closeModal} className="text-gray-400 hover:text-white text-xl">✕</button>
             </div>
+
+            <p className="text-gray-300 mb-5 text-sm">{activeTask.description}</p>
+
+            <div className="flex flex-col gap-3">
+              {tasksCompleted[activeTask.id] ? (
+                <button
+                  disabled
+                  className="bg-gray-700 text-gray-400 font-medium py-3 rounded-xl cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                  <img src={checkIcon} alt="check" className="w-5 h-5" />
+                  Награда получена
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={handleSubscribe}
+                    className="bg-[#00ff9d] text-black font-medium py-3 rounded-xl hover:bg-[#00e68c] transition flex items-center justify-center gap-2"
+                  >
+                    Подписаться на ТГ
+                  </button>
+
+                  <button
+                    onClick={handleCheck}
+                    className="bg-gray-700 text-white font-medium py-3 rounded-xl hover:bg-gray-600 transition flex items-center justify-center gap-2"
+                  >
+                    Проверить
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Уведомление сверху при ошибке */}
+      {showError && (
+        <div className="fixed top-0 left-0 right-0 z-50 flex justify-center animate-slideDownFadeOut">
+          <div className="bg-yellow-800/90 text-white px-6 py-3 rounded-b-xl shadow-2xl flex items-center gap-3 max-w-[90%] mx-auto">
+            <img src={dangerIcon} alt="danger" className="w-6 h-6" />
+            <span className="text-sm font-medium">Вы не подписаны</span>
           </div>
         </div>
       )}
