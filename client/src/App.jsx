@@ -5,7 +5,7 @@ import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import MainMenu from './components/MainMenu';
 
-// Импортируем страницы (все должны существовать!)
+// Импортируем страницы
 import Profile from './pages/Profile';
 import Tasks from './pages/Tasks';
 import Shop from './pages/Shop';
@@ -15,8 +15,17 @@ import Referrals from './pages/Referrals';
 function App() {
   const [page, setPage] = useState('main');
   const [user, setUser] = useState(null);
-  const [balance, setBalance] = useState(500);
-  const [tasksCompleted, setTasksCompleted] = useState({ telegram: false, chat: false });
+  
+  // Загружаем баланс и задачи из localStorage при запуске
+  const [balance, setBalance] = useState(() => {
+    const saved = localStorage.getItem('balance');
+    return saved ? parseInt(saved) : 500;
+  });
+
+  const [tasksCompleted, setTasksCompleted] = useState(() => {
+    const saved = localStorage.getItem('tasksCompleted');
+    return saved ? JSON.parse(saved) : { telegram: false, chat: false };
+  });
 
   useEffect(() => {
     if (window.Telegram?.WebApp) {
@@ -29,19 +38,14 @@ function App() {
         setUser(initUser);
       }
     }
-
-    // Загружаем баланс и статусы из localStorage
-    const storedBalance = localStorage.getItem('balance');
-    const storedTasks = localStorage.getItem('tasksCompleted');
-    if (storedBalance) setBalance(parseInt(storedBalance));
-    if (storedTasks) setTasksCompleted(JSON.parse(storedTasks));
   }, []);
 
-  // Сохраняем баланс и статусы в localStorage при изменении
+  // Сохраняем баланс при каждом изменении
   useEffect(() => {
     localStorage.setItem('balance', balance.toString());
   }, [balance]);
 
+  // Сохраняем статус задач при каждом изменении
   useEffect(() => {
     localStorage.setItem('tasksCompleted', JSON.stringify(tasksCompleted));
   }, [tasksCompleted]);
@@ -54,15 +58,17 @@ function App() {
         return <MainMenu setPage={setPage} />;
 
       case 'profile':
-        return <Profile />;  // ← Это ключевая строка — именно она показывает Профиль
+        return <Profile />;
 
       case 'tasks':
-        return <Tasks 
-          balance={balance} 
-          setBalance={setBalance} 
-          tasksCompleted={tasksCompleted} 
-          setTasksCompleted={setTasksCompleted} 
-        />; // ← Добавлено: передаём tasksCompleted
+        return (
+          <Tasks 
+            balance={balance} 
+            setBalance={setBalance} 
+            tasksCompleted={tasksCompleted}
+            setTasksCompleted={setTasksCompleted}
+          />
+        );
 
       // Заглушка для остальных страниц
       case 'shop':
