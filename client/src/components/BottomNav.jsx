@@ -1,53 +1,36 @@
-// client/src/components/BottomNav.jsx
-import Icon from './Icon';
-
-export default function BottomNav({ currentPage, setPage }) {
-  const navItems = [
-    { id: 'main',     label: 'Главная',   icon: 'home'     },
-    { id: 'tasks',    label: 'Задания',   icon: 'tasks'    },
-    { id: 'shop',     label: 'Магазин',   icon: 'shop'     },
-    { id: 'referrals',label: 'Друзья',    icon: 'referrals' },
-    { id: 'profile',  label: 'Профиль',   icon: 'profile'  },
-  ];
-
+export default function Header({ firstName, balance, photoUrl }) {
   return (
-    <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-6">
-      {/* Тонкий овал, как на твоём скрине */}
-      <nav className="bg-black/80 border border-gray-800/70 rounded-full py-2.5 px-10 flex justify-start items-center pl-6 shadow-2xl shadow-black/60 backdrop-blur-xl min-w-[340px] max-w-[90%] w-full">
-        {navItems.map(item => {
-          const isActive = currentPage === item.id;
+    <div className="relative px-4 pt-4 pb-2 flex items-center justify-between">
+      {/* Левая часть: текст */}
+      <div className="flex flex-col">
+        <div className="text-sm opacity-80">Добро пожаловать,</div>
+        <div className="text-lg font-semibold">{firstName}</div>
+      </div>
 
-          return (
-            <button
-              key={item.id}
-              onClick={() => setPage(item.id)}
-              className="relative flex flex-col items-center gap-0.5 px-3 min-w-[60px] transition-all"
-            >
-              {/* Круглое свечение под иконкой (как в карточках меню) */}
-              <div className={`absolute inset-0 rounded-full blur-xl transition-all duration-300 pointer-events-none z-0 ${
-                isActive ? 'bg-[#00ff9d]/40 scale-125 opacity-100' : 'opacity-0 scale-90'
-              }`}></div>
+      {/* Аватар по центру сверху */}
+      <div className="absolute left-1/2 -translate-x-1/2 top-4">
+        {photoUrl ? (
+          <img
+            src={photoUrl}
+            alt="avatar"
+            className="w-14 h-14 rounded-full border-2 border-green-500 object-cover"
+          />
+        ) : (
+          <div className="w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center text-2xl">
+            👤
+          </div>
+        )}
+      </div>
 
-              {/* Иконка сверху свечения */}
-              <Icon 
-                name={item.icon} 
-                className={`w-7 h-7 relative z-10 transition-all duration-200 ${
-                  isActive 
-                    ? 'text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.9)] scale-110' 
-                    : 'text-gray-400'
-                }`} 
-              />
+      {/* Баланс — серый фон + неоновое мягкое свечение вокруг */}
+      <div className="relative flex items-center gap-2 px-5 py-2 rounded-full bg-[#1c1f24] border border-[#2a2f36] shadow-lg shadow-[#00ff9d]/20">
+        {/* Мягкое неоновое свечение вокруг всей рамки */}
+        <div className="absolute inset-[-8px] rounded-full bg-gradient-to-r from-[#00ff9d]/30 via-[#00e68c]/20 to-[#00ff9d]/30 blur-xl opacity-80 pointer-events-none"></div>
 
-              {/* Текст под иконкой */}
-              <span className={`text-[10px] font-medium whitespace-nowrap relative z-10 ${
-                isActive ? 'text-[#00ff9d]' : 'text-gray-400'
-              }`}>
-                {item.label}
-              </span>
-            </button>
-          );
-        })}
-      </nav>
+        {/* Сам баланс */}
+        <span className="text-[#00ff9d] text-xl drop-shadow-[0_0_6px_rgba(0,255,157,0.5)] relative z-10">♢</span>
+        <span className="font-bold text-white text-lg relative z-10">{balance.toLocaleString()}</span>
+      </div>
     </div>
   );
 }
