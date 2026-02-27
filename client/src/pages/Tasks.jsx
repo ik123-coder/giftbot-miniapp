@@ -5,14 +5,9 @@ import crossIcon from '../assets/icons/cross.svg';
 import telegramIcon from '../assets/icons/telegram.svg';
 import chatIcon from '../assets/icons/chat.svg';
 
-export default function Tasks({ balance, setBalance }) {
+export default function Tasks({ balance, setBalance, tasksCompleted, setTasksCompleted }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [activeTask, setActiveTask] = useState(null);
-
-  const [tasksCompleted, setTasksCompleted] = useState({
-    telegram: false,
-    chat: false,
-  });
 
   const tasks = [
     {
@@ -66,18 +61,16 @@ export default function Tasks({ balance, setBalance }) {
     <div className="p-6 pt-10 min-h-screen">
       <h1 className="text-3xl font-bold text-[#00ff9d] mb-8 text-center">Задания</h1>
 
-      {/* Карточки заданий — уменьшенные, с прокруткой */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-[90%] mx-auto">
+      {/* Карточки заданий */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-[85%] mx-auto">
         {tasks.map(task => (
           <button
             key={task.id}
             onClick={() => openModal(task)}
             className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-5 flex flex-col items-center gap-3 overflow-hidden active:scale-95 transition-all duration-200 shadow-lg shadow-black/30"
           >
-            {/* Фон карточки */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/8 via-transparent to-[#00ff9d]/5 blur-xl pointer-events-none"></div>
 
-            {/* Иконка задачи */}
             <div className="relative z-10 w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center overflow-hidden">
               <img 
                 src={task.icon}
@@ -88,7 +81,6 @@ export default function Tasks({ balance, setBalance }) {
 
             <span className="text-lg font-medium text-white relative z-10">{task.title}</span>
 
-            {/* Статус с SVG */}
             <div className={`flex items-center gap-2 px-4 py-1 rounded-full relative z-10 ${
               task.status === 'Выполнено' ? 'bg-green-600/30 text-green-400' : 'bg-red-600/30 text-red-400'
             }`}>
@@ -107,12 +99,12 @@ export default function Tasks({ balance, setBalance }) {
         ))}
       </div>
 
-      {/* Модальное окно в центре, маленькое, свайп вниз */}
+      {/* Модальное окно в центре */}
       {modalOpen && activeTask && (
         <div 
           className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 animate-fadeIn"
           onClick={(e) => {
-            if (e.target === e.currentTarget) closeModal(); // клик вне окна — закрыть
+            if (e.target === e.currentTarget) closeModal();
           }}
         >
           <div 
