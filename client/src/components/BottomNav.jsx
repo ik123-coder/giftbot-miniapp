@@ -22,14 +22,10 @@ export default function Header({ firstName, balance, photoUrl }) {
         )}
       </div>
 
-      {/* Баланс — серый фон + неоновое мягкое свечение вокруг */}
-      <div className="relative flex items-center gap-2 px-5 py-2 rounded-full bg-[#1c1f24] border border-[#2a2f36] shadow-lg shadow-[#00ff9d]/20">
-        {/* Мягкое неоновое свечение вокруг всей рамки */}
-        <div className="absolute inset-[-8px] rounded-full bg-gradient-to-r from-[#00ff9d]/30 via-[#00e68c]/20 to-[#00ff9d]/30 blur-xl opacity-80 pointer-events-none"></div>
-
-        {/* Сам баланс */}
-        <span className="text-[#00ff9d] text-xl drop-shadow-[0_0_6px_rgba(0,255,157,0.5)] relative z-10">♢</span>
-        <span className="font-bold text-white text-lg relative z-10">{balance.toLocaleString()}</span>
+      {/* Правая часть: баланс */}
+      <div className="flex items-center gap-1 bg-gray-800 px-3 py-1.5 rounded-full border border-green-600">
+        <span className="text-green-400 text-lg">$</span>
+        <span className="font-bold">{balance}</span>
       </div>
     </div>
   );
