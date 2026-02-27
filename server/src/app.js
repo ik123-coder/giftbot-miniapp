@@ -3,7 +3,8 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
-const limiter = require('./middleware/rateLimiter');
+// const limiter = require('./middleware/rateLimiter');
+// app.use(limiter);
 const apiRoutes = require('./routes/index');
 
 const app = express();
