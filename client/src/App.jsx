@@ -65,8 +65,7 @@ function App() {
           <Tasks 
             balance={balance} 
             setBalance={setBalance} 
-            tasksCompleted={tasksCompleted}
-            setTasksCompleted={setTasksCompleted}
+            userId={user?.id}
           />
         );
 
