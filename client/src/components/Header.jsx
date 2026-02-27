@@ -9,13 +9,13 @@ export default function Header({ firstName, balance, photoUrl }) {
 
       {/* Аватар по центру сверху */}
       <div className="absolute left-1/2 -translate-x-1/2 top-4">
-        <div className="relative w-16 h-16">
-          {/* Самое внешнее свечение (размытое, небольшой диапазон) */}
-          <div className="absolute inset-[-6px] rounded-full bg-gradient-to-r from-[#00ff9d]/40 via-[#00e68c]/30 to-[#00ff9d]/40 blur-lg opacity-80 pointer-events-none"></div>
+        <div className="relative w-14 h-14">
+          {/* Самое внешнее мягкое размытое свечение (небольшой диапазон) */}
+          <div className="absolute inset-[-10px] rounded-full bg-gradient-to-r from-[#00ff9d]/40 via-[#00e68c]/30 to-[#00ff9d]/40 blur-xl opacity-70 pointer-events-none"></div>
 
           {/* Зелёная неоновая обводка (градиент) */}
-          <div className="absolute inset-[-2px] rounded-full bg-gradient-to-r from-[#00ff9d] via-[#00e68c] to-[#00ff9d] p-[2px] pointer-events-none">
-            {/* Чёрная обводка (основная, толще) */}
+          <div className="absolute inset-[-3px] rounded-full bg-gradient-to-r from-[#00ff9d] via-[#00e68c] to-[#00ff9d] p-[2px] pointer-events-none">
+            {/* Чёрная обводка (толще) */}
             <div className="w-full h-full rounded-full border-4 border-black bg-black">
               {/* Тонкая серая внутренняя обводка */}
               <div className="w-full h-full rounded-full border border-gray-600 overflow-hidden">
