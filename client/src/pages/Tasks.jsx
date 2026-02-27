@@ -8,8 +8,8 @@ export default function Tasks({ balance, setBalance }) {
   const [activeTask, setActiveTask] = useState(null);
 
   const [tasksCompleted, setTasksCompleted] = useState({
-    telegram: false, // Подписка на тг-канал
-    chat: false,     // Вступление в чат
+    telegram: false,
+    chat: false,
   });
 
   const tasks = [
@@ -69,7 +69,6 @@ export default function Tasks({ balance, setBalance }) {
             onClick={() => openModal(task)}
             className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-6 flex flex-col items-center gap-4 overflow-hidden active:scale-95 transition-all duration-200 shadow-lg shadow-black/30"
           >
-            {/* Фон карточки */}
             <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/8 via-transparent to-[#00ff9d]/5 blur-xl pointer-events-none"></div>
 
             <div className="relative z-10 w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center text-5xl">
@@ -78,7 +77,6 @@ export default function Tasks({ balance, setBalance }) {
 
             <span className="text-xl font-medium text-white relative z-10">{task.title}</span>
 
-            {/* Статус с иконкой SVG */}
             <div className={`flex items-center gap-2 px-4 py-1 rounded-full relative z-10 ${
               task.status === 'Выполнено' ? 'bg-green-600/30 text-green-400' : 'bg-red-600/30 text-red-400'
             }`}>
@@ -97,10 +95,25 @@ export default function Tasks({ balance, setBalance }) {
         ))}
       </div>
 
-      {/* Модальное окно (плавно снизу) */}
+      {/* Модальное окно в центре экрана с возможностью свайпа вниз */}
       {modalOpen && activeTask && (
-        <div className="fixed inset-0 bg-black/70 flex items-end z-50 animate-fadeIn">
-          <div className="bg-[#1c1f24] rounded-t-3xl w-full max-h-[80vh] overflow-y-auto animate-slideUp">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 animate-fadeIn">
+          <div 
+            className="bg-[#1c1f24] rounded-3xl w-[90%] max-w-[400px] max-h-[85vh] overflow-y-auto animate-popIn touch-pan-y"
+            onTouchStart={(e) => {
+              const startY = e.touches[0].clientY;
+              const handleTouchMove = (e) => {
+                if (e.touches[0].clientY - startY > 100) {
+                  closeModal();
+                  document.removeEventListener('touchmove', handleTouchMove);
+                }
+              };
+              document.addEventListener('touchmove', handleTouchMove, { passive: true });
+              e.currentTarget.addEventListener('touchend', () => {
+                document.removeEventListener('touchmove', handleTouchMove);
+              }, { once: true });
+            }}
+          >
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-white">{activeTask.title}</h2>
@@ -131,7 +144,7 @@ export default function Tasks({ balance, setBalance }) {
                       onClick={handleClaimReward}
                       className="bg-gray-700 text-white font-medium py-4 rounded-xl hover:bg-gray-600 transition flex items-center justify-center gap-2"
                     >
-                      Получить {activeTask.reward} монет
+                      Проверить
                     </button>
                   </>
                 )}
