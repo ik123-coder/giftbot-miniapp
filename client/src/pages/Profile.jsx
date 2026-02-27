@@ -6,7 +6,7 @@ export default function Profile() {
       <div className="bg-[#0f1115] border border-[#00ff9d]/50 rounded-3xl p-10 max-w-md mx-auto">
         <p className="text-3xl text-white mb-6">Страница профиля будет скоро!</p>
         <p className="text-xl text-gray-300">В разработке...</p>
-        <p className="text-lg text-gray-400 mt-8">Теперь можно добавлять реальный контент</p>
+        <p className="text-lg text-gray-400 mt-8">Промокоды, реф. система и прочее.</p>
       </div>
     </div>
   );
