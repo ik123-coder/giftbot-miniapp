@@ -22,11 +22,15 @@ export default function Header({ firstName, balance, photoUrl }) {
         )}
       </div>
 
-      {/* Правая часть: баланс */}
-      <div className="flex items-center gap-2 bg-[#1c1f24] px-5 py-2 rounded-full border border-[#2a2f36] shadow-lg shadow-[#00ff9d]/5 hover:shadow-[0_0_12px_rgba(0,255,157,0.15)] transition-all duration-300">
-  <span className="text-[#00ff9d] text-xl drop-shadow-[0_0_6px_rgba(0,255,157,0.5)]">$</span>
-  <span className="font-bold text-white text-lg">{balance.toLocaleString()}</span>
-</div>
+      {/* Баланс — серый фон, как карточки меню + неоновое свечение вокруг */}
+      <div className="relative flex items-center gap-1 px-5 py-2 rounded-full bg-[#1c1f24] border border-[#2a2f36] shadow-lg shadow-[#00ff9d]/10 hover:shadow-[0_0_16px_rgba(0,255,157,0.4)] transition-all duration-300">
+        {/* Мягкое неоновое свечение вокруг рамки */}
+        <div className="absolute inset-[-6px] rounded-full bg-gradient-to-r from-[#00ff9d]/30 via-[#00e68c]/20 to-[#00ff9d]/30 blur-lg opacity-70 pointer-events-none"></div>
+
+        {/* Сам блок баланса */}
+        <span className="text-[#00ff9d] text-xl drop-shadow-[0_0_6px_rgba(0,255,157,0.5)] relative z-10">$</span>
+        <span className="font-bold text-white text-lg relative z-10">{balance.toLocaleString()}</span>
+      </div>
     </div>
   );
 }
