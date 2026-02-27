@@ -8,10 +8,15 @@ export default function MainMenu({ setPage }) {
         onClick={() => setPage('tasks')}
         className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-6 flex flex-col items-center gap-3 overflow-hidden active:scale-95 transition-all duration-200"
       >
-        {/* Постоянный мигающий зелёный размытый фон */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
-        
-        <Icon name="tasks" className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
+        {/* Убрал мигающий фон — он был на всю карточку */}
+        <div className="relative">
+          {/* Круглое мягкое свечение только вокруг иконки */}
+          <div className="absolute inset-[-6px] rounded-full bg-[#00ff9d]/20 blur-lg pointer-events-none z-0 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
+          <Icon 
+            name="tasks" 
+            className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_6px_rgba(0,255,157,0.4)] relative z-10 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(0,255,157,0.5)]" 
+          />
+        </div>
         <span className="text-lg font-medium text-white relative z-10">Задания</span>
         <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
           Выполняй и<br />зарабатывай
@@ -23,9 +28,13 @@ export default function MainMenu({ setPage }) {
         onClick={() => setPage('shop')}
         className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-6 flex flex-col items-center gap-3 overflow-hidden active:scale-95 transition-all duration-200"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
-        
-        <Icon name="shop" className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
+        <div className="relative">
+          <div className="absolute inset-[-6px] rounded-full bg-[#00ff9d]/20 blur-lg pointer-events-none z-0 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
+          <Icon 
+            name="shop" 
+            className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_6px_rgba(0,255,157,0.4)] relative z-10 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(0,255,157,0.5)]" 
+          />
+        </div>
         <span className="text-lg font-medium text-white relative z-10">Магазин</span>
         <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
           Трать<br />монеты
@@ -37,9 +46,13 @@ export default function MainMenu({ setPage }) {
         onClick={() => setPage('giveaways')}
         className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-6 flex flex-col items-center gap-3 overflow-hidden active:scale-95 transition-all duration-200"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
-        
-        <Icon name="giveaways" className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
+        <div className="relative">
+          <div className="absolute inset-[-6px] rounded-full bg-[#00ff9d]/20 blur-lg pointer-events-none z-0 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
+          <Icon 
+            name="giveaways" 
+            className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_6px_rgba(0,255,157,0.4)] relative z-10 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(0,255,157,0.5)]" 
+          />
+        </div>
         <span className="text-lg font-medium text-white relative z-10">Розыгрыши</span>
         <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
           Испытай<br />удачу
@@ -51,9 +64,13 @@ export default function MainMenu({ setPage }) {
         onClick={() => setPage('referrals')}
         className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-6 flex flex-col items-center gap-3 overflow-hidden active:scale-95 transition-all duration-200"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
-        
-        <Icon name="referrals" className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
+        <div className="relative">
+          <div className="absolute inset-[-6px] rounded-full bg-[#00ff9d]/20 blur-lg pointer-events-none z-0 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
+          <Icon 
+            name="referrals" 
+            className="w-14 h-14 text-[#00ff9d] drop-shadow-[0_0_6px_rgba(0,255,157,0.4)] relative z-10 transition-all duration-200 hover:scale-105 hover:drop-shadow-[0_0_8px_rgba(0,255,157,0.5)]" 
+          />
+        </div>
         <span className="text-lg font-medium text-white relative z-10">Рефералы</span>
         <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
           Приглашай<br />друзей
