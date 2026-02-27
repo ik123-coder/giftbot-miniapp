@@ -40,17 +40,3 @@ main, .min-h-screen, div {
 ::-webkit-scrollbar {
   display: none;
 }
-@keyframes pulse-slow {
-  0%, 100% {
-    opacity: 0.5;
-    transform: scale(1.05);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
-}
-
-.animate-pulse-slow {
-  animation: pulse-slow 5s infinite ease-in-out;
-}
