@@ -16,6 +16,7 @@ function App() {
   const [page, setPage] = useState('main');
   const [user, setUser] = useState(null);
   const [balance, setBalance] = useState(500);
+  const [tasksCompleted, setTasksCompleted] = useState({ telegram: false, chat: false });
 
   useEffect(() => {
     if (window.Telegram?.WebApp) {
@@ -28,7 +29,22 @@ function App() {
         setUser(initUser);
       }
     }
+
+    // Загружаем баланс и статусы из localStorage
+    const storedBalance = localStorage.getItem('balance');
+    const storedTasks = localStorage.getItem('tasksCompleted');
+    if (storedBalance) setBalance(parseInt(storedBalance));
+    if (storedTasks) setTasksCompleted(JSON.parse(storedTasks));
   }, []);
+
+  // Сохраняем баланс и статусы в localStorage при изменении
+  useEffect(() => {
+    localStorage.setItem('balance', balance.toString());
+  }, [balance]);
+
+  useEffect(() => {
+    localStorage.setItem('tasksCompleted', JSON.stringify(tasksCompleted));
+  }, [tasksCompleted]);
 
   const firstName = user?.first_name || 'Гость';
 
@@ -38,10 +54,15 @@ function App() {
         return <MainMenu setPage={setPage} />;
 
       case 'profile':
-        return <Profile />;
+        return <Profile />;  // ← Это ключевая строка — именно она показывает Профиль
 
       case 'tasks':
-        return <Tasks balance={balance} setBalance={setBalance} />; // ← добавлено: страница Задания с балансом
+        return <Tasks 
+          balance={balance} 
+          setBalance={setBalance} 
+          tasksCompleted={tasksCompleted} 
+          setTasksCompleted={setTasksCompleted} 
+        />; // ← Добавлено: передаём tasksCompleted
 
       // Заглушка для остальных страниц
       case 'shop':
