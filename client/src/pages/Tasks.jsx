@@ -9,7 +9,7 @@ export default function Tasks({ balance, setBalance, userId }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  const [isCompleted, setIsCompleted] = useState(false);
+  const isCompleted = tasksCompleted?.telegram;
 
   const task = {
     title: 'Подписка на ТГ',
