@@ -31,7 +31,9 @@ export default function Tasks({ balance, setBalance, userId }) {
   };
 
   const handleSubscribe = () => {
-    window.open(task.link, '_blank');
+    if (task.link) {
+      window.open(task.link, '_blank');
+    }
   };
 
   const handleCheck = async () => {
@@ -42,7 +44,7 @@ export default function Tasks({ balance, setBalance, userId }) {
     }
 
     try {
-      const response = await fetch('https://твой-backend-railway.up.railway.app/api/checkMembership', {
+      const response = await fetch('https://твой-backend.up.railway.app/api/checkMembership', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chatId: task.chatId, userId }),
@@ -78,7 +80,7 @@ export default function Tasks({ balance, setBalance, userId }) {
           {/* Фон карточки */}
           <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/8 via-transparent to-[#00ff9d]/5 blur-xl pointer-events-none"></div>
 
-          {/* Иконка */}
+          {/* Иконка задачи */}
           <div className="relative z-10 w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center overflow-hidden">
             <img 
               src={task.icon}
@@ -87,7 +89,7 @@ export default function Tasks({ balance, setBalance, userId }) {
             />
           </div>
 
-          <span className="text-xl font-medium text-white relative z-10">{task.title}</span>
+          <span className="text-lg font-medium text-white relative z-10">{task.title}</span>
 
           {/* Статус с SVG */}
           <div className={`flex items-center gap-2 px-4 py-1 rounded-full relative z-10 ${
@@ -124,7 +126,7 @@ export default function Tasks({ balance, setBalance, userId }) {
             <p className="text-gray-300 mb-5 text-sm">{task.description}</p>
 
             <div className="flex flex-col gap-3">
-              {tasksCompleted.telegram ? (
+              {isCompleted ? (
                 <button
                   disabled
                   className="bg-gray-700 text-gray-400 font-medium py-3 rounded-xl cursor-not-allowed flex items-center justify-center gap-2"
