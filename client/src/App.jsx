@@ -5,7 +5,7 @@ import Header from './components/Header';
 import BottomNav from './components/BottomNav';
 import MainMenu from './components/MainMenu';
 
-// Импортируем страницы
+// Импортируем страницы (все должны существовать!)
 import Profile from './pages/Profile';
 import Tasks from './pages/Tasks';
 import Shop from './pages/Shop';
@@ -38,9 +38,9 @@ function App() {
         return <MainMenu setPage={setPage} />;
 
       case 'profile':
-        return <Profile />;           // ← Это обязательно должно быть здесь
+        return <Profile />;  // ← Это ключевая строка — именно она показывает Профиль
 
-      // Все остальные страницы — заглушка
+      // Заглушка для остальных страниц
       case 'tasks':
       case 'shop':
       case 'giveaways':
