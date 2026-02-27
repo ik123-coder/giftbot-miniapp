@@ -2,10 +2,10 @@
 export default function Profile() {
   return (
     <div className="p-6 pt-10 pb-24">
-      {/* Большая карточка в стиле главного меню: серый фон, зелёная рамка, тень */}
+      {/* Большая карточка в сером стиле, как в главном меню */}
       <div className="bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-8 shadow-lg shadow-[#00ff9d]/10 hover:shadow-[0_0_20px_rgba(0,255,157,0.15)] transition-all duration-300">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-[#00ff9d] mb-6">
+          <h1 className="text-4xl font-bold text-[#00ff9d] mb-8">
             ПРОФИЛЬ
           </h1>
 
