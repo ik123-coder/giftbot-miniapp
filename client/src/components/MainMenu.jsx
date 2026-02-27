@@ -14,7 +14,7 @@ export default function MainMenu({ setPage }) {
           <div className="absolute inset-[-6px] rounded-full bg-[#00ff9d]/20 blur-lg pointer-events-none z-0 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
           <Icon 
             name="tasks" 
-            className="w-8 h-8 text-[#00e68c] drop-shadow-[0_0_6px_rgba(0,230,140,0.4)] relative z-10" 
+            className="w-6 h-6 text-[#00e68c] drop-shadow-[0_0_6px_rgba(0,230,140,0.4)] relative z-10" 
           />
         </div>
         <span className="text-lg font-medium text-white relative z-10">Задания</span>
@@ -32,7 +32,7 @@ export default function MainMenu({ setPage }) {
           <div className="absolute inset-[-6px] rounded-full bg-[#00ff9d]/20 blur-lg pointer-events-none z-0 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
           <Icon 
             name="shop" 
-            className="w-8 h-8 text-[#00e68c] drop-shadow-[0_0_6px_rgba(0,230,140,0.4)] relative z-10" 
+            className="w-6 h-6 text-[#00e68c] drop-shadow-[0_0_6px_rgba(0,230,140,0.4)] relative z-10" 
           />
         </div>
         <span className="text-lg font-medium text-white relative z-10">Магазин</span>
@@ -50,7 +50,7 @@ export default function MainMenu({ setPage }) {
           <div className="absolute inset-[-6px] rounded-full bg-[#00ff9d]/20 blur-lg pointer-events-none z-0 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
           <Icon 
             name="giveaways" 
-            className="w-8 h-8 text-[#00e68c] drop-shadow-[0_0_6px_rgba(0,230,140,0.4)] relative z-10" 
+            className="w-6 h-6 text-[#00e68c] drop-shadow-[0_0_6px_rgba(0,230,140,0.4)] relative z-10" 
           />
         </div>
         <span className="text-lg font-medium text-white relative z-10">Розыгрыши</span>
@@ -68,7 +68,7 @@ export default function MainMenu({ setPage }) {
           <div className="absolute inset-[-6px] rounded-full bg-[#00ff9d]/20 blur-lg pointer-events-none z-0 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
           <Icon 
             name="referrals" 
-            className="w-8 h-8 text-[#00e68c] drop-shadow-[0_0_6px_rgba(0,230,140,0.4)] relative z-10" 
+            className="w-6 h-6 text-[#00e68c] drop-shadow-[0_0_6px_rgba(0,230,140,0.4)] relative z-10" 
           />
         </div>
         <span className="text-lg font-medium text-white relative z-10">Рефералы</span>
