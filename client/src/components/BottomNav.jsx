@@ -1,3 +1,4 @@
+// client/src/components/BottomNav.jsx
 import Icon from './Icon';
 
 export default function BottomNav({ currentPage, setPage }) {
@@ -11,8 +12,8 @@ export default function BottomNav({ currentPage, setPage }) {
 
   return (
     <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-8">
-      {/* Длинный тонкий овал, не до краёв экрана */}
-      <nav className="bg-black/70 border border-gray-800/50 rounded-full py-3 px-10 flex justify-around items-center shadow-2xl shadow-black/60 backdrop-blur-xl min-w-[340px] max-w-[420px] w-full">
+      {/* Длинный тонкий овал с отступами от краёв */}
+      <nav className="bg-black/80 border border-gray-800/60 rounded-full py-3 px-10 flex justify-between items-center shadow-2xl shadow-black/60 backdrop-blur-xl min-w-[340px] max-w-[420px] w-full">
         {navItems.map(item => {
           const isActive = currentPage === item.id;
 
@@ -20,7 +21,9 @@ export default function BottomNav({ currentPage, setPage }) {
             <button
               key={item.id}
               onClick={() => setPage(item.id)}
-              className="flex flex-col items-center gap-0.5 px-4 transition-all"
+              className={`flex flex-col items-center gap-0.5 px-3 min-w-[60px] transition-all ${
+                isActive ? 'text-[#00ff9d]' : 'text-gray-400 hover:text-gray-200'
+              }`}
             >
               <Icon 
                 name={item.icon} 
