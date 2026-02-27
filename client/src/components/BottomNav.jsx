@@ -13,7 +13,7 @@ export default function BottomNav({ currentPage, setPage }) {
   return (
     <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-center px-6">
       {/* Liquid glass овал — полупрозрачный серый с сильным размытием и глянцем */}
-      <nav className="bg-gray-900/25 backdrop-blur-2xl border border-white/10 rounded-full py-2.5 px-10 flex justify-start items-center pl-6 shadow-2xl shadow-black/50 overflow-hidden min-w-[340px] max-w-[90%] w-full">
+      <nav className="bg-gray/80 border border-gray-800/70 rounded-full py-2.5 px-10 flex justify-start items-center pl-6 shadow-2xl shadow-black/60 backdrop-blur-xl min-w-[340px] max-w-[90%] w-full">
         {/* Внутренняя глянцевая подсветка (лёгкий белый градиент сверху) */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/15 via-transparent to-transparent pointer-events-none z-0"></div>
 
