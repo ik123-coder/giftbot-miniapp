@@ -4,7 +4,10 @@ export default function Header({ firstName, balance, photoUrl }) {
       {/* Левая часть: текст */}
       <div className="flex flex-col">
         <div className="text-sm opacity-80">Добро пожаловать,</div>
-        <div className="text-lg font-semibold">{firstName}</div>
+        {/* Имя пользователя с градиентом и свечением */}
+        <div className="text-lg font-semibold bg-gradient-to-r from-[#00cc88] to-[#00ff9d] bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(0,255,157,0.6)]">
+          {firstName}
+        </div>
       </div>
 
       {/* Аватар по центру сверху */}
@@ -24,7 +27,7 @@ export default function Header({ firstName, balance, photoUrl }) {
 
       {/* Правая часть: баланс */}
       <div className="flex items-center gap-1 bg-gray-800 px-3 py-1.5 rounded-full border border-green-600">
-        <span className="text-green-400 text-lg">♢</span>
+        <span className="text-green-400 text-lg">$</span>
         <span className="font-bold">{balance}</span>
       </div>
     </div>
