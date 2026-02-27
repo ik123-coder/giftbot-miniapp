@@ -22,7 +22,7 @@ export default function BottomNav({ currentPage, setPage }) {
             className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-full transition-all ${
               isActive
                 ? 'text-[#00ff9d] bg-[#00ff9d]/10'
-                : 'text-gray-300 hover:text-gray-200' // ← здесь светлее серый
+                : 'text-gray-150 hover:text-gray-100' // ← здесь светлее серый
             }`}
           >
             {/* Иконки: серые (светлее) по умолчанию, зелёные при активной вкладке */}
