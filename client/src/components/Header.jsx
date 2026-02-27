@@ -17,7 +17,7 @@ export default function Header({ firstName, balance, photoUrl }) {
       </div>
 
       {/* Центр: теперь текст (был аватар) */}
-      <div className="absolute left-1/2 -translate-x-[70%] top-4 flex flex-col items-center">
+      <div className="absolute left-1/2 -translate-x-[85%] top-4 flex flex-col items-center">
         <div className="text-sm opacity-80">Добро пожаловать,</div>
         <div className="text-lg font-semibold">{firstName}</div>
       </div>
