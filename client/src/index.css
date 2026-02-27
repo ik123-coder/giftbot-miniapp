@@ -40,3 +40,16 @@ main, .min-h-screen, div {
 ::-webkit-scrollbar {
   display: none;
 }
+/* Запрет выделения и копирования текста во всём приложении */
+* {
+  -webkit-user-select: none; /* Safari/iOS */
+  -moz-user-select: none;    /* Firefox */
+  -ms-user-select: none;     /* Internet Explorer/Edge */
+  user-select: none;         /* Стандарт */
+}
+
+/* Отключаем контекстное меню (долгое нажатие) */
+* {
+  -webkit-touch-callout: none; /* iOS Safari */
+  touch-action: manipulation;  /* Убирает задержку при касании */
+}
