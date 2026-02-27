@@ -22,17 +22,21 @@ export default function BottomNav({ currentPage, setPage }) {
             className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-full transition-all ${
               isActive
                 ? 'text-[#00ff9d] bg-[#00ff9d]/10'
-                : 'text-gray-500 hover:text-gray-300'
+                : 'text-gray-300 hover:text-gray-200' // ← здесь светлее серый
             }`}
           >
-            {/* Иконки в нижней панели — серые по умолчанию, зелёные только при активной вкладке */}
+            {/* Иконки: серые (светлее) по умолчанию, зелёные при активной вкладке */}
             <Icon 
               name={item.icon} 
               className={`w-7 h-7 ${
-                isActive ? 'text-[#00ff9d] drop-shadow-[0_0_8px_rgba(0,255,157,0.6)]' : 'text-gray-500'
+                isActive 
+                  ? 'text-[#00ff9d] drop-shadow-[0_0_8px_rgba(0,255,157,0.6)]' 
+                  : 'text-gray-300' // ← светлее серый
               }`} 
             />
-            <span className={`text-xs font-medium ${isActive ? 'text-[#00ff9d]' : 'text-gray-500'}`}>
+            <span className={`text-xs font-medium ${
+              isActive ? 'text-[#00ff9d]' : 'text-gray-300' // ← текст тоже светлее
+            }`}>
               {item.label}
             </span>
           </button>
