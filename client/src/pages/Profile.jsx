@@ -1,4 +1,6 @@
 // client/src/pages/Profile.jsx
+import { useUser } from '../context/UserContext';
+
 export default function Profile() {
   const { user, balance, loading } = useUser();
 
@@ -16,10 +18,10 @@ export default function Profile() {
 
   return (
     <div className="p-6 pt-10 pb-24">
-      {/* Верхний блок с приветствием и аватаром */}
+      {/* Верхний блок с аватаром и текстом */}
       <div className="bg-[#0f1115] border border-[#00ff9d]/40 rounded-3xl p-8 mb-8 shadow-xl shadow-[#00ff9d]/15 backdrop-blur-sm">
         <div className="flex items-center gap-6">
-          {/* Аватар слева (большой, как на скрине) */}
+          {/* Аватар слева */}
           <div className="flex-shrink-0">
             {photoUrl ? (
               <img
@@ -61,7 +63,7 @@ export default function Profile() {
         <div className="text-3xl text-white font-medium">Скоро…</div>
       </div>
 
-      {/* Дата регистрации (текущая дата — потом заменишь на реальную из базы) */}
+      {/* Дата регистрации (реальная текущая дата) */}
       <div className="bg-[#0f1115] border border-[#00ff9d]/40 rounded-3xl p-6 text-center shadow-lg shadow-[#00ff9d]/10">
         <div className="text-xl text-gray-300 mb-2">Дата регистрации</div>
         <div className="text-2xl font-medium text-white">
