@@ -5,73 +5,59 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl text-gray-400">Загрузка...</div>
+      <div className="flex items-center justify-center min-h-[50vh] text-gray-400">
+        Загрузка...
       </div>
     );
   }
 
   const firstName = user?.first_name || 'Гость';
-  const username = user?.username ? `@${user.username}` : '@username';
+  const username = user?.username ? `@${user.username}` : 'нет username';
 
   return (
-    <div className="p-5 pt-8 pb-24">
-      {/* Большой верхний блок */}
-      <div className="bg-[#0f1115] border border-[#00ff9d]/30 rounded-3xl p-6 mb-6 shadow-lg shadow-[#00ff9d]/10">
-        <div className="flex items-center gap-4">
+    <div className="p-6 pt-10">
+      {/* Большой блок профиля */}
+      <div className="bg-[#0f1115]/80 border border-[#00ff9d]/30 rounded-3xl p-8 shadow-lg shadow-[#00ff9d]/10 backdrop-blur-md">
+        <div className="flex flex-col items-center gap-4">
           {/* Аватар */}
-          <div className="relative">
-            {user?.photo_url ? (
-              <img
-                src={user.photo_url}
-                alt="avatar"
-                className="w-20 h-20 rounded-2xl object-cover border-2 border-[#00ff9d]/50"
-              />
-            ) : (
-              <div className="w-20 h-20 rounded-2xl bg-gray-800 flex items-center justify-center text-4xl border-2 border-[#00ff9d]/30">
-                👤
-              </div>
-            )}
+          {user?.photo_url ? (
+            <img
+              src={user.photo_url}
+              alt="avatar"
+              className="w-28 h-28 rounded-full border-4 border-[#00ff9d]/40 object-cover shadow-xl shadow-[#00ff9d]/20"
+            />
+          ) : (
+            <div className="w-28 h-28 rounded-full bg-gray-800 flex items-center justify-center text-6xl border-4 border-[#00ff9d]/30 shadow-xl">
+              👤
+            </div>
+          )}
+
+          {/* Имя и username */}
+          <div className="text-center">
+            <div className="text-3xl font-bold bg-gradient-to-r from-[#00ff9d] to-[#00e68c] bg-clip-text text-transparent">
+              {firstName}
+            </div>
+            <div className="text-lg text-gray-400 mt-1">{username}</div>
           </div>
 
-          {/* Имя и юзернейм */}
-          <div>
-            <div className="text-2xl font-bold">{firstName}</div>
-            <div className="text-gray-400 text-lg">{username}</div>
+          {/* Баланс */}
+          <div className="mt-6 w-full bg-black/40 rounded-2xl p-6 border border-gray-800 text-center">
+            <div className="text-5xl font-black text-[#00ff9d] mb-2">
+              {balance.toLocaleString()}
+            </div>
+            <div className="text-xl text-gray-300">монет</div>
           </div>
-        </div>
-      </div>
 
-      {/* Баланс */}
-      <div className="bg-[#0f1115] border border-[#00ff9d]/30 rounded-3xl p-6 mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="text-3xl">💎</div>
-          <div>
-            <div className="text-sm text-gray-400">Баланс</div>
-            <div className="text-4xl font-bold text-[#00ff9d]">{balance.toLocaleString()}</div>
+          {/* Рефералы (заглушка) */}
+          <div className="mt-4 w-full bg-black/30 rounded-xl p-4 border border-gray-800 text-center">
+            <div className="text-xl font-medium text-white">Рефералы</div>
+            <div className="text-lg text-gray-400">Скоро…</div>
           </div>
-        </div>
-        <div className="text-[#00ff9d] text-2xl">♢</div>
-      </div>
 
-      {/* Рефералы */}
-      <div className="bg-[#0f1115] border border-[#00ff9d]/30 rounded-3xl p-6 mb-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="text-lg font-medium">Рефералы</div>
-            <div className="text-gray-400 text-xl">Скоро…</div>
-          </div>
-          <div className="text-4xl opacity-30">👥</div>
-        </div>
-      </div>
-
-      {/* Дата регистрации */}
-      <div className="bg-[#0f1115] border border-[#00ff9d]/30 rounded-3xl p-6">
-        <div className="flex items-center gap-3">
-          <div className="text-3xl">📅</div>
-          <div>
+          {/* Дата регистрации */}
+          <div className="mt-4 w-full bg-black/30 rounded-xl p-4 border border-gray-800 text-center">
             <div className="text-sm text-gray-400">Дата регистрации</div>
-            <div className="text-xl font-medium">
+            <div className="text-lg font-medium text-white">
               {new Date().toLocaleDateString('ru-RU', { 
                 day: 'numeric', 
                 month: 'long', 
