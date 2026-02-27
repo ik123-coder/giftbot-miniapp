@@ -18,7 +18,6 @@ function App() {
       const initUser = tg.initDataUnsafe?.user;
       if (initUser) {
         setUser(initUser);
-        // Можно позже подключить реальный fetch баланса
       }
     }
   }, []);
@@ -34,31 +33,26 @@ function App() {
       return <Profile user={user} balance={balance} />;
     }
 
-    // Все остальные страницы пока заблокированы
-    if (['tasks', 'shop', 'giveaways', 'referrals'].includes(page)) {
-      return (
-        <div className="flex flex-col items-center justify-center h-full mt-20 px-6 text-center">
-          <div className="text-6xl mb-6">🔒</div>
-          <h2 className="text-3xl font-bold text-red-500 mb-4">
-            Пока недоступно!
-          </h2>
-          <p className="text-gray-400 text-lg">
-            Этот раздел находится в разработке.<br />
-            Скоро станет доступен.
-          </p>
-        </div>
-      );
-    }
-
-    // На всякий случай fallback
-    return <MainMenu setPage={setPage} />;
+    // Заблокированные разделы
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] px-6 text-center">
+        <div className="text-7xl mb-6">🔒</div>
+        <h2 className="text-4xl font-bold text-red-600 mb-4">
+          Пока недоступно!
+        </h2>
+        <p className="text-gray-400 text-xl leading-relaxed max-w-md">
+          Этот раздел ещё в разработке.<br/>
+          Вернёмся к нему чуть позже.
+        </p>
+      </div>
+    );
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
+    <div className="min-h-screen bg-black text-white flex flex-col relative">
       <Header firstName={firstName} balance={balance} photoUrl={user?.photo_url} />
 
-      <main className="flex-1 overflow-y-auto pb-24">
+      <main className="flex-1 overflow-y-auto pb-28">
         {renderContent()}
       </main>
 
