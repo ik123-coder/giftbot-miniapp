@@ -2,21 +2,22 @@
 export default {
   content: [
     "./index.html",
-    "./src/**/*.{js,jsx}",
+    "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors: {
-        'accent': '#00ff9d',
+        accent: '#00ff9d',
         'dark-bg': '#000000',
-        'card': '#0f1115',
+        card: '#0f1115',
         'border-dark': '#1a1f25',
-      },
-      borderRadius: {
-        'xl2': '1.25rem',
+        'text-dim': '#8a8f99',
       },
       boxShadow: {
-        'glow': '0 0 12px rgba(0, 255, 157, 0.4)',
+        glow: '0 0 12px rgba(0, 255, 157, 0.4)',
+      },
+      borderRadius: {
+        large: '1.5rem',
       },
     },
   },
