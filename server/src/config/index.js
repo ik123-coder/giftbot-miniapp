@@ -1,3 +1,4 @@
+// config/index.js
 require('dotenv').config();
 
 module.exports = {
@@ -5,5 +6,4 @@ module.exports = {
   mongoUri: process.env.MONGO_URI,
   botToken: process.env.BOT_TOKEN,
   nodeEnv: process.env.NODE_ENV || 'development',
-  // можно добавить jwtSecret, redisUrl и т.д. позже
 };
