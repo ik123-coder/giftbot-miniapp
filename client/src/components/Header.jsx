@@ -26,12 +26,12 @@ export default function Header({ firstName, balance, photoUrl }) {
       <div
         className="
           flex items-center gap-1
-          px-4 py-2
+          px-3 py-1
           rounded-full
-          bg-white/10
-          backdrop-blur-md
-          border border-white/20
-          shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]
+          bg-gray-700/40
+          backdrop-blur-lg
+          border border-white/10
+          shadow-[inset_0_1px_1px_rgba(255,255,255,0.06)]
           text-white
         "
       >
