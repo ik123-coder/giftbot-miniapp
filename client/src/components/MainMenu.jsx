@@ -1,64 +1,41 @@
-import Icon from './Icon';
-
-export default function MainMenu({ setPage }) {
+export default function Header({ firstName, balance, photoUrl }) {
   return (
-    <div className="grid grid-cols-2 gap-5 mt-10 px-5 pb-20">
-      {/* Задания */}
-      <button
-        onClick={() => setPage('tasks')}
-        className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-6 flex flex-col items-center gap-3 overflow-hidden active:scale-95 transition-all duration-200"
-      >
-        {/* Постоянный мигающий зелёный размытый фон */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
-        
-        <Icon name="tasks" className="w-10 h-10 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
-        <span className="text-lg font-medium text-white relative z-10">Задания</span>
-        <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
-          Выполняй и<br />зарабатывай
-        </span>
-      </button>
+    <div className="relative px-4 pt-4 pb-2 flex items-center justify-between">
+      {/* Левая часть: текст */}
+      <div className="flex flex-col">
+        <div className="text-sm opacity-80">Добро пожаловать,</div>
+        <div className="text-lg font-semibold">{firstName}</div>
+      </div>
 
-      {/* Магазин */}
-      <button
-        onClick={() => setPage('shop')}
-        className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-6 flex flex-col items-center gap-3 overflow-hidden active:scale-95 transition-all duration-200"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
-        
-        <Icon name="shop" className="w-10 h-10 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
-        <span className="text-lg font-medium text-white relative z-10">Магазин</span>
-        <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
-          Трать<br />монеты
-        </span>
-      </button>
+      {/* Аватар по центру сверху */}
+      <div className="absolute left-1/2 -translate-x-1/2 top-4">
+        {photoUrl ? (
+          <img
+            src={photoUrl}
+            alt="avatar"
+            className="w-14 h-14 rounded-full border-2 border-green-500 object-cover"
+          />
+        ) : (
+          <div className="w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center text-2xl">
+            👤
+          </div>
+        )}
+      </div>
 
-      {/* Розыгрыши */}
-      <button
-        onClick={() => setPage('giveaways')}
-        className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-6 flex flex-col items-center gap-3 overflow-hidden active:scale-95 transition-all duration-200"
+      {/* Правая часть: баланс */}
+      <div
+        className="
+          flex items-center gap-1
+          px-4 py-2
+          rounded-full
+          bg-[#2b2b2b]
+          text-white
+          shadow-[0_0_8px_rgba(0,255,157,0.6),0_0_22px_rgba(0,255,157,0.35)]
+        "
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
-        
-        <Icon name="giveaways" className="w-10 h-10 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
-        <span className="text-lg font-medium text-white relative z-10">Розыгрыши</span>
-        <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
-          Испытай<br />удачу
-        </span>
-      </button>
-
-      {/* Рефералы */}
-      <button
-        onClick={() => setPage('referrals')}
-        className="relative bg-[#1c1f24] border border-[#2a2f36] rounded-2xl p-6 flex flex-col items-center gap-3 overflow-hidden active:scale-95 transition-all duration-200"
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-[#00ff9d]/15 via-transparent to-[#00ff9d]/10 blur-2xl animate-pulse-slow pointer-events-none z-0"></div>
-        
-        <Icon name="referrals" className="w-10 h-10 text-[#00ff9d] drop-shadow-[0_0_12px_rgba(0,255,157,0.7)] relative z-10" />
-        <span className="text-lg font-medium text-white relative z-10">Рефералы</span>
-        <span className="text-sm text-gray-400 text-center leading-tight relative z-10">
-          Приглашай<br />друзей
-        </span>
-      </button>
+        <span className="text-green-400 text-lg">$</span>
+        <span className="font-bold">{balance}</span>
+      </div>
     </div>
   );
 }
