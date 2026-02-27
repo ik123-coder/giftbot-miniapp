@@ -3,11 +3,36 @@ body {
   font-family: -apple-system, BlinkMacSystemFont;
   background: #0B0F1A;
   color: white;
+  overflow-x: hidden;
 }
 
 #app {
-  padding: 20px;
   padding-bottom: 100px;
+}
+
+.screens {
+  position: relative;
+  overflow: hidden;
+}
+
+.screen {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 100%;
+  opacity: 0;
+  transition: all 0.3s ease;
+  padding: 20px;
+}
+
+.screen.active {
+  left: 0;
+  opacity: 1;
+}
+
+.screen.exit-left {
+  left: -100%;
+  opacity: 0;
 }
 
 .header {
@@ -90,6 +115,7 @@ body {
   color: #8E9AB3;
   font-size: 12px;
   cursor: pointer;
+  transition: 0.2s;
 }
 
 .tab.active {
