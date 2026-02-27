@@ -23,15 +23,18 @@ export default function Header({ firstName, balance, photoUrl }) {
       </div>
 
       {/* Правая часть: баланс */}
-      <div className="relative flex items-center">
-        {/* Неоновое свечение */}
-        <div className="absolute inset-0 rounded-full blur-md bg-green-500 opacity-40"></div>
-
-        {/* Основная залитая форма */}
-        <div className="relative flex items-center gap-1 px-4 py-2 rounded-full bg-gray-800 text-white">
-          <span className="text-green-400 text-lg">$</span>
-          <span className="font-bold">{balance}</span>
-        </div>
+      <div
+        className="
+          flex items-center gap-1
+          px-4 py-2
+          rounded-full
+          bg-[#2b2b2b]
+          text-white
+          shadow-[0_0_8px_rgba(34,197,94,0.7),0_0_20px_rgba(34,197,94,0.4)]
+        "
+      >
+        <span className="text-green-400 text-lg">$</span>
+        <span className="font-bold">{balance}</span>
       </div>
     </div>
   );
