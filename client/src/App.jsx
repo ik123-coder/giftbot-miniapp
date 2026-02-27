@@ -49,7 +49,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col relative">
+    <div className="min-h-screen text-white flex flex-col relative">
       <Header firstName={firstName} balance={balance} photoUrl={user?.photo_url} />
 
       <main className="flex-1 overflow-y-auto pb-28">
