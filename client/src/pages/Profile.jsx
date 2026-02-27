@@ -1,4 +1,4 @@
-import { useUser } from '../context/UserContext';
+import { useUser } from '../App.jsx';
 
 export default function Profile() {
   const { user, balance, loading } = useUser();
